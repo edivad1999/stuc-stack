@@ -34,7 +34,9 @@ Do not claim screenshot, device, or visual coverage you did not run. Name the co
 
 Must use for user-visible Android UI, runtime-only bugs, “launch the app”, visual parity, or playbook “matching surface” on an Android repo.
 
-Host unit tests stay Gradle. Assemble alone is not done when UI changed.
+If the consuming repo has `.cursor/skills/verify-<app>/`, **follow that skill** after this one: its feature map is the coverage set. This file is the Drive loop those generated skills call. Sample shape: `create-verification-skill/references/verify-notes-example/`.
+
+Host unit tests stay Gradle. Assemble alone is not done when UI changed. There is no `check.sh`.
 
 ## Device lock
 

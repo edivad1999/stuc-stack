@@ -8,6 +8,8 @@ This tree does **not** vendor chrisbanes/skills, android/skills, or the android-
 
 Tailored from the [pstack](https://github.com/cursor/plugins/tree/main/pstack) engineering stack (MIT, Lauren Tan). Copyright retained in `LICENSE`. Version here is `0.1.0`; it does not impersonate pstack `0.14.3`.
 
+Project-local verification skill + feature-map **shape** follows [poteto/verification-skill-example](https://github.com/poteto/verification-skill-example) (fictional Atlas map). In this plugin that shape is Android: Gradle assemble, the `android` CLI, **android-verify**, no Node `check.sh`. Sample: `skills/create-verification-skill/references/verify-notes-example/`.
+
 ## Install
 
 1. Enable this plugin from `plugins/stuc-stack` (Cursor: `.cursor-plugin/`; Claude: `.claude-plugin/`; Codex: `.codex-plugin/`). This repo already points at it:
@@ -60,7 +62,7 @@ Concrete, from this tree plus the intake spec. Not a restatement of pstack skill
 - **Android/Kotlin surface.** Playbooks that said “matching surface” / Playwright / `control-ui` default to `android-verify` + the official `android-cli` skill when the repo is an Android app. Gradle still builds; `android run` only deploys prebuilt APKs.
 - **Generic engineering skills kept, then tailored.** `how`, `why`, `unslop`, and `architect` are rewritten for this bar: simplest change, copy the last screen, no four-model bakeoff on small diffs, host-agnostic git (`gh`/`glab`), Jira/GitHub Issues, name the command that ran. `tdd`, `arena`, `swarm`, `interrogate`, the 21 `principle-*` leaves, and the playbook machine remain. Opinionated Android/Kotlin overlays live in `stuc-mode`, `references/android-opinions.md`, and a few principle leaves — project-agnostic wording, evidence ids (`P#`).
 - **TypeScript pack dropped.** There is no `typescript-best-practices/`. Kotlin type/API discipline is `kotlin-best-practices` plus chrisbanes Kotlin clusters by **name**.
-- **New verification and Kotlin glue (this plugin).** `android-verify` (Drive loop), `kotlin-best-practices` (routing + overlays). `gradle-run` and `kotlin-control-flow` are **not** shipped here; they are chrisbanes skills on HEAD.
+- **New verification and Kotlin glue (this plugin).** `android-verify` (Drive loop), `kotlin-best-practices` (routing + overlays). Project-local `verify-<app>` skills are generated into the consuming repo (`create-verification-skill` / `maintain-verification-skill`) with an Android feature map. `gradle-run` and `kotlin-control-flow` are **not** shipped here; they are chrisbanes skills on HEAD.
 - **Upstreams referenced, not vendored.** `using-chrisbanes-skills` and `using-android-skills` route to current **names** and fail closed. Manifest `skills:` / `agents:` paths stay inside this directory. Official `android-cli` is named, never pasted.
 - **Verification contract.** Do not claim device/screenshot coverage that was not run. Name Gradle tasks, `android` commands, and devices. One device serial per run (`principle-separate-before-serializing-shared-state`).
 - **Multi-agent packaging.** pstack ships Cursor (`.cursor-plugin/`) only. This directory also has `.claude-plugin/` (with `dependencies`) and `.codex-plugin/` pointing at the same `skills/` tree.

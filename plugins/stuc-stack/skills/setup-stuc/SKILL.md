@@ -108,4 +108,4 @@ Tell the user the rule was written, whether upstreams are ready, and that the mo
 
 ### 7. Offer a verification skill (optional)
 
-If the project has no `verify-*` skill, offer once to generate one with `/create-verification-skill`. Android apps should Drive through **android-verify**.
+If the project has no `verify-*` skill, offer once to generate one with `/create-verification-skill`. Android apps should Drive through **android-verify** and a `features/` map. Sample shape: `create-verification-skill/references/verify-notes-example/`.
