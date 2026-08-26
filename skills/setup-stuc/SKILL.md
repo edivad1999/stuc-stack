@@ -25,12 +25,14 @@ Check, do not vendor:
 | chrisbanes HEAD clusters + router | Installed `using-chrisbanes-skills` resolves **outside this plugin** (chrisbanes HEAD router). `compose-state-and-effects` resolves the same way. This plugin's glue is `stuc-chrisbanes`; do not count a same-named file under this plugin as the router. Also probe `kotlin-api-design`, `kotlin-control-flow`, `gradle-run` if those tasks are in scope. Do **not** probe removed leaves such as `compose-state-authoring`. | `npx skills add chrisbanes/skills` (plus host-specific install below) |
 | android/skills leaves | `edge-to-edge` resolves | `android init` then `android skills add --all` (Codex: `android skills add --agent=codex --all`) |
 
-Host-specific chrisbanes install if `npx skills add` is not how this agent loads skills:
+Host-specific chrisbanes and android/skills install if `npx skills add` / `android skills add` is not how this agent loads skills. On Claude Code, add these marketplaces and install these plugins **before** stuc-stack. Bare names would resolve as `…@stuc-stack`; do not install chrisbanes or android from this marketplace.
 
 ```
 # Claude Code
 /plugin marketplace add chrisbanes/skills
 /plugin install chrisbanes-skills@chrisbanes-skills
+/plugin marketplace add android/skills
+/plugin install android-skills@android-skills
 
 # Codex
 codex plugin marketplace add chrisbanes/skills --ref main

@@ -3,7 +3,18 @@
   "owner": {
     "name": "stuc-stack"
   },
+  "allowCrossMarketplaceDependenciesOn": [
+    "chrisbanes-skills",
+    "android-skills"
+  ],
   "plugins": [
-    { "name": "stuc-stack", "source": "./" }
+    {
+      "name": "stuc-stack",
+      "source": "./",
+      "dependencies": [
+        { "name": "chrisbanes-skills", "marketplace": "chrisbanes-skills" },
+        { "name": "android-skills", "marketplace": "android-skills" }
+      ]
+    }
   ]
 }

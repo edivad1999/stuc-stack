@@ -2,7 +2,7 @@
 
 This repository is the plugin. Skills, agents, and Cursor/Claude/Codex manifests live at the repo root. Consumers install from the public GitHub repo; commands are in `README.md` (Install).
 
-Enable this plugin, then install upstreams. Do not copy those trees into git. `.agents/skills/` is an install location and must stay gitignored.
+Install upstreams, then enable this plugin. Do not copy those trees into git. `.agents/skills/` is an install location and must stay gitignored.
 
 Required:
 
@@ -14,7 +14,7 @@ android skills add --all
 
 Put `android` on PATH (https://developer.android.com/tools/agents/android-cli).
 
-Cursor has no plugin-to-plugin dependencies. `.cursor/settings.json` enables `stuc-stack`. Local load: symlink this directory to `~/.cursor/plugins/local/stuc-stack`. Claude Code: `.claude/settings.json` registers this directory and enables `stuc-stack@stuc-stack`; it can declare `chrisbanes-skills` and `android-skills`. Codex: `.agents/plugins/marketplace.json` points at `.`.
+Cursor has no plugin-to-plugin dependencies. `.cursor/settings.json` enables `stuc-stack`. Local load: symlink this directory to `~/.cursor/plugins/local/stuc-stack`. Claude Code: add `chrisbanes/skills` and `android/skills` first, then this marketplace; `dependencies` are `chrisbanes-skills@chrisbanes-skills` and `android-skills@android-skills` (not `@stuc-stack`). Codex: `.agents/plugins/marketplace.json` points at `.`.
 
 ```
 codex plugin marketplace add chrisbanes/skills --ref main

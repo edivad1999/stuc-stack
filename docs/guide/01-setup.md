@@ -1,6 +1,20 @@
 # Set up stuc-stack
 
-Install this plugin, install upstreams, pick models, then run a first task. `/setup-stuc` refuses to call the stack ready if chrisbanes, android/skills, or `android` is missing.
+Install upstreams first, then this plugin, pick models, then run a first task. `/setup-stuc` refuses to call the stack ready if chrisbanes, android/skills, or `android` is missing.
+
+## Install upstreams (not this git tree)
+
+```text
+npx skills add chrisbanes/skills
+android init
+android skills add --all
+```
+
+Codex extras: `codex plugin marketplace add chrisbanes/skills --ref main` then `codex plugin add chrisbanes-skills@chrisbanes-skills`; `android skills add --agent=codex --all`.
+
+Binary: https://developer.android.com/tools/agents/android-cli/download
+
+Claude Code `dependencies` are `chrisbanes-skills@chrisbanes-skills` and `android-skills@android-skills`. Install those two plugins **before** stuc-stack. `/setup-stuc` fails closed if they are missing.
 
 ## Install this plugin
 
@@ -15,9 +29,13 @@ mkdir -p ~/.cursor/plugins/local
 ln -sfn "$(pwd)" ~/.cursor/plugins/local/stuc-stack
 ```
 
-Claude Code:
+Claude Code (upstreams first; those plugins are not in this marketplace):
 
 ```text
+/plugin marketplace add chrisbanes/skills
+/plugin install chrisbanes-skills@chrisbanes-skills
+/plugin marketplace add android/skills
+/plugin install android-skills@android-skills
 /plugin marketplace add edivad1999/stuc-stack
 /plugin install stuc-stack@stuc-stack
 ```
@@ -30,20 +48,6 @@ codex plugin add stuc-stack@stuc-stack
 ```
 
 Cursor has no `dependencies` field in `plugin.json`.
-
-## Install upstreams (not this git tree)
-
-```text
-npx skills add chrisbanes/skills
-android init
-android skills add --all
-```
-
-Codex extras: `codex plugin marketplace add chrisbanes/skills --ref main` then `codex plugin add chrisbanes-skills@chrisbanes-skills`; `android skills add --agent=codex --all`.
-
-Binary: https://developer.android.com/tools/agents/android-cli/download
-
-Claude Code may auto-install `chrisbanes-skills` and `android-skills` from this plugin's `dependencies`. If that fails, install those two plugins first.
 
 ## Pick your models and doctor
 
