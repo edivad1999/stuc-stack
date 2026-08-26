@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "stuc-stack": {
+      "source": {
+        "source": "directory",
+        "path": "./plugins/stuc-stack"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "stuc-stack@stuc-stack": true
+  }
+}

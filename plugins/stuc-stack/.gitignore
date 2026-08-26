@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+*.log
+.cache-complete
+.env
+.env.*
+*.jks
+*.keystore
+local.properties
+credentials.json

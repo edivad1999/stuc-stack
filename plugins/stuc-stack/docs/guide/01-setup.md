@@ -1,0 +1,45 @@
+# Set up stuc-stack
+
+Install this plugin, install upstreams, pick models, then run a first task. `/setup-stuc` refuses to call the stack ready if chrisbanes, android/skills, or `android` is missing.
+
+## Install this plugin
+
+This repo hosts the plugin at `plugins/stuc-stack`. Enable it for your agent (Cursor `.cursor-plugin/`, Claude `.claude-plugin/`, Codex `.codex-plugin/`). Cursor has no `dependencies` field in `plugin.json`.
+
+## Install upstreams (not this git tree)
+
+```text
+npx skills add chrisbanes/skills
+android init
+android skills add --all
+```
+
+Binary: https://developer.android.com/tools/agents/android-cli/download
+
+Claude Code may auto-install `chrisbanes-skills` and `android-skills` from this plugin's `dependencies`. If that fails, install those two plugins first.
+
+## Pick your models and doctor
+
+```text
+/setup-stuc
+```
+
+[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc` and checks that `compose-state-authoring`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve.
+
+You only override what you care about. `inherit-parent` or `auto` means the subagent inherits the parent chat model.
+
+## Accept the verification offer, or don't
+
+If the project has no `verify-*` skill, setup offers [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) once. For Android apps, generated Drive calls **android-verify** (Gradle assemble, then the `android` CLI). It does not copy the android-cli skill into the repo.
+
+After setup, start a new chat. The model rule applies to new sessions.
+
+## Run your first task
+
+```text
+/stuc-mode the snackbar never shows after save. fix it and prove it on a device.
+```
+
+Watch the todo list. First item is the Principles section (and `references/android-opinions.md` for architecture taste). Follow the repo in front of you; do not invent a module graph.
+
+Next: [Route work through `/stuc-mode`](./02-stuc-mode.md).

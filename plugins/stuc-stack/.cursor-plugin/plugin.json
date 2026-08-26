@@ -1,0 +1,27 @@
+{
+	"name": "stuc-stack",
+	"displayName": "stuc-stack",
+	"version": "0.1.0",
+	"description": "Android/Kotlin agent workflows: sticky mode, principles, playbooks, and verification. Requires chrisbanes/skills, android/skills, and android-cli installed separately.",
+	"author": {
+		"name": "stuc-stack"
+	},
+	"license": "MIT",
+	"keywords": [
+		"stuc-stack",
+		"stuc-mode",
+		"android",
+		"kotlin",
+		"workflow",
+		"principles"
+	],
+	"category": "developer-tools",
+	"tags": [
+		"workflow",
+		"android",
+		"kotlin",
+		"principles"
+	],
+	"skills": "./skills/",
+	"agents": "./agents/"
+}

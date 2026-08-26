@@ -1,0 +1,17 @@
+{
+  "name": "stuc-stack-repo",
+  "plugins": [
+    {
+      "name": "stuc-stack",
+      "source": {
+        "source": "local",
+        "path": "./plugins/stuc-stack"
+      },
+      "policy": {
+        "installation": "INSTALLED_BY_DEFAULT",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+# Private intake: harvested chats, preference dumps, research from private corpus.
+# Sharing this would leak the author's AI conversation history.
+.agents/stuc-stack-intake/
+
+# Upstream skill copies (chrisbanes/skills, local android/cli trees). Install via
+# `npx skills add` / `android skills add --all`; do not vendor.
+.agents/skills/
+skills-lock.json
+
+# IDE
+.idea/
+*.iml
+
+# Secrets and local machine config
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+local.properties
+credentials.json
+**/google-services.json
+
+# Dependencies and junk
+node_modules/
+.DS_Store
+*.log
+
+# Plugin local cache marker
+.cache-complete

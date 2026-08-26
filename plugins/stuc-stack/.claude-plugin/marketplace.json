@@ -1,0 +1,9 @@
+{
+  "name": "stuc-stack",
+  "owner": {
+    "name": "stuc-stack"
+  },
+  "plugins": [
+    { "name": "stuc-stack", "source": "./" }
+  ]
+}
