@@ -4,16 +4,32 @@ Install this plugin, install upstreams, pick models, then run a first task. `/se
 
 ## Install this plugin
 
-This repo is the plugin. Enable it for your agent (Cursor `.cursor-plugin/`, Claude `.claude-plugin/`, Codex `.codex-plugin/`). Cursor has no `dependencies` field in `plugin.json`.
+Public repo: [edivad1999/stuc-stack](https://github.com/edivad1999/stuc-stack). Commands and Cursor caveats live in the [README Install](../../README.md#install) section. Short form:
 
-Cursor local load (not committed):
+Cursor is **not** on the [Cursor Marketplace](https://cursor.com/marketplace). Closest GitHub path: `/add-plugin https://github.com/edivad1999/stuc-stack`. If that import stays stale or hidden, clone and load locally:
 
 ```text
+git clone https://github.com/edivad1999/stuc-stack.git
+cd stuc-stack
 mkdir -p ~/.cursor/plugins/local
 ln -sfn "$(pwd)" ~/.cursor/plugins/local/stuc-stack
 ```
 
-Then reload the window and enable third-party plugins if local plugins stay hidden.
+Claude Code:
+
+```text
+/plugin marketplace add edivad1999/stuc-stack
+/plugin install stuc-stack@stuc-stack
+```
+
+Codex:
+
+```text
+codex plugin marketplace add edivad1999/stuc-stack --ref main
+codex plugin add stuc-stack@stuc-stack
+```
+
+Cursor has no `dependencies` field in `plugin.json`.
 
 ## Install upstreams (not this git tree)
 

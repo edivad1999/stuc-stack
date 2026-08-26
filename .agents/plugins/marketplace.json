@@ -1,11 +1,11 @@
 {
-  "name": "stuc-stack-repo",
+  "name": "stuc-stack",
   "plugins": [
     {
       "name": "stuc-stack",
       "source": {
         "source": "local",
-        "path": "."
+        "path": "./"
       },
       "policy": {
         "installation": "INSTALLED_BY_DEFAULT",

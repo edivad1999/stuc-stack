@@ -1,6 +1,6 @@
 # stuc-stack
 
-This repository is the plugin. Skills, agents, and Cursor/Claude/Codex manifests live at the repo root.
+This repository is the plugin. Skills, agents, and Cursor/Claude/Codex manifests live at the repo root. Consumers install from the public GitHub repo; commands are in `README.md` (Install).
 
 Enable this plugin, then install upstreams. Do not copy those trees into git. `.agents/skills/` is an install location and must stay gitignored.
 
