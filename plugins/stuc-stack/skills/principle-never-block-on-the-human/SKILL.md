@@ -20,4 +20,5 @@ The human supervises asynchronously. Agents must stay unblocked: make reasonable
 **Boundaries:**
 - **Irreversible actions** (force-push, delete production data, send external messages) still require confirmation.
 - **Reversible actions** (write code, edit notes, split tasks) should proceed without blocking.
-- **Product direction** comes from the human; *execution* should not block.
+- **Preference forks** still require an ask: library vs dynamic feature, tracking module shape, shared app-layer, flavors on every module, Robolectric expansion, error-handling unification. Do not pick a folklore winner. See `stuc-mode` autonomy and `android-opinions.md`.
+- **Product direction** comes from the human; *execution* of reversible local edits should not block.

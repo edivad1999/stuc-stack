@@ -44,7 +44,7 @@ In context, that's enough. [`/tdd`](../../skills/tdd/SKILL.md) writes the smalle
 
 ## Let Kotlin type rules load from chrisbanes
 
-[`kotlin-best-practices`](../../skills/kotlin-best-practices/SKILL.md) plus chrisbanes leaves (`kotlin-types-value-class`, Flow, coroutines) cover Kotlin type discipline. Install chrisbanes/skills. Do not copy those bodies here.
+[`kotlin-best-practices`](../../skills/kotlin-best-practices/SKILL.md) plus chrisbanes clusters (`kotlin-api-design`, `kotlin-concurrency-and-flow`, `kotlin-control-flow`) cover Kotlin type discipline. Install chrisbanes/skills. Do not copy those bodies here. Gradle runs go through chrisbanes `gradle-run`.
 
 ## Clean before you commit
 

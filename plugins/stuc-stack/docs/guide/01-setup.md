@@ -6,6 +6,15 @@ Install this plugin, install upstreams, pick models, then run a first task. `/se
 
 This repo hosts the plugin at `plugins/stuc-stack`. Enable it for your agent (Cursor `.cursor-plugin/`, Claude `.claude-plugin/`, Codex `.codex-plugin/`). Cursor has no `dependencies` field in `plugin.json`.
 
+Cursor local load (not committed):
+
+```text
+mkdir -p ~/.cursor/plugins/local
+ln -sfn "$(pwd)/plugins/stuc-stack" ~/.cursor/plugins/local/stuc-stack
+```
+
+Then reload the window and enable third-party plugins if local plugins stay hidden.
+
 ## Install upstreams (not this git tree)
 
 ```text
@@ -13,6 +22,8 @@ npx skills add chrisbanes/skills
 android init
 android skills add --all
 ```
+
+Codex extras: `codex plugin marketplace add chrisbanes/skills --ref main` then `codex plugin add chrisbanes-skills@chrisbanes-skills`; `android skills add --agent=codex --all`.
 
 Binary: https://developer.android.com/tools/agents/android-cli/download
 
@@ -24,7 +35,7 @@ Claude Code may auto-install `chrisbanes-skills` and `android-skills` from this 
 /setup-stuc
 ```
 
-[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc` and checks that `compose-state-authoring`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve.
+[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc` and checks that `compose-state-and-effects`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve (`which android` / `android -V`). That doctor is not a device proof.
 
 You only override what you care about. `inherit-parent` or `auto` means the subagent inherits the parent chat model.
 

@@ -3,7 +3,7 @@
 **You own the design. Plan, review, verify.** Delegate implementation; stay in the lead.
 
 1. `how` over the affected subsystem.
-2. `architect` for parallel design exploration. Skipping stays as `architect skipped: <reason>`; do not fold the design decision silently into implementation.
+2. Default: copy the last similar screen or module. Smallest diff. Skip `architect` unless ownership or layering is novel with no in-repo precedent, or the user asked to design first. Skipping stays as `architect skipped: <reason>`. Do not bake off four designs for a small change. (P1, P8, P30)
 3. Write the throughput checkpoint as four todo items. A dimension that genuinely does not apply (single file, no fan-out) keeps its item with `n/a: <reason>` rather than being dropped:
    - **Blocking first steps.** Gates run before fan-out.
    - **Independent workstreams.** Disjoint files, services, or layers parallelize. Shared writes serialize.

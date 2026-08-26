@@ -2,5 +2,6 @@
   "name": "stuc-stack",
   "version": "0.1.0",
   "description": "Android/Kotlin agent workflows. Install chrisbanes-skills, android-skills, and the android CLI separately.",
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "agents": "./agents/"
 }

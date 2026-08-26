@@ -11,16 +11,25 @@ Tailored from the [pstack](https://github.com/cursor/plugins/tree/main/pstack) e
 ## Install
 
 1. Enable this plugin from `plugins/stuc-stack` (Cursor: `.cursor-plugin/`; Claude: `.claude-plugin/`; Codex: `.codex-plugin/`). This repo already points at it:
-   - Cursor: `.cursor/settings.json` (`plugins.stuc-stack.enabled`)
+   - Cursor: `.cursor/settings.json` (`plugins.stuc-stack.enabled`). Local load: `mkdir -p ~/.cursor/plugins/local && ln -sfn "$(pwd)/plugins/stuc-stack" ~/.cursor/plugins/local/stuc-stack`, then reload and enable third-party plugins.
    - Claude Code: `.claude/settings.json` (`extraKnownMarketplaces` + `enabledPlugins`)
    - Codex: `.agents/plugins/marketplace.json`
-2. Chris Banes skills:
+2. Chris Banes skills (HEAD clusters, not the pre-cluster leaf names):
 
 ```
 npx skills add chrisbanes/skills
 ```
 
 Claude: `/plugin marketplace add chrisbanes/skills` then `/plugin install chrisbanes-skills@chrisbanes-skills`.
+
+Codex:
+
+```
+codex plugin marketplace add chrisbanes/skills --ref main
+codex plugin add chrisbanes-skills@chrisbanes-skills
+```
+
+A fresh install provides `compose-state-and-effects`, `compose-performance`, `compose-component-design`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, `kotlin-control-flow`, `gradle-run`, plus `compose-animations`, `compose-focus-navigation`, `compose-ui-testing-patterns`. `/setup-stuc` probes those names and fails closed if they are missing.
 
 3. Android CLI + Google skills:
 
@@ -30,15 +39,15 @@ android init
 android skills add --all
 ```
 
-4. Run `/setup-stuc`. It writes the model rule and **doctors** upstreams. If chrisbanes, android/skills, or `android` is missing, the stack is not ready.
+Codex: `android skills add --agent=codex --all`.
+
+4. Run `/setup-stuc`. It writes the model rule and **doctors** upstreams: `which android` / `android -V`, official `android-cli` skill, chrisbanes `compose-state-and-effects`, android/skills `edge-to-edge`. If any of those are missing, the stack is not ready. Doctoring the binary is not a device proof.
 
 Cursor `plugin.json` has no `dependencies` field. Claude Code declares `chrisbanes-skills` and `android-skills`. Cross-marketplace resolve may require installing those two first.
 
-Remaining GUI / reload steps: `.agents/stuc-stack-intake/design/install-status.md`.
-
 ## Use
 
-`/stuc-mode` for non-trivial work. Compose/Kotlin design routes to chrisbanes **leaf names**. Google workflows route to android/skills **leaf names**. Device proof is `/android-verify` (Gradle assemble, then the `android` binary).
+`/stuc-mode` for non-trivial work. Compose/Kotlin design routes to chrisbanes **cluster names**. Google workflows route to android/skills **leaf names**. Device proof is `/android-verify` (Gradle assemble, then the `android` binary). Gradle execution uses the installed chrisbanes `gradle-run` skill, not a copy in this plugin.
 
 Opinionated overlays come from the author’s Android/Kotlin work, restated without a particular product’s module graph. Follow the repo in front of you.
 
@@ -49,10 +58,10 @@ Concrete, from this tree plus the intake spec. Not a restatement of pstack skill
 ### Major
 
 - **Android/Kotlin surface.** Playbooks that said “matching surface” / Playwright / `control-ui` default to `android-verify` + the official `android-cli` skill when the repo is an Android app. Gradle still builds; `android run` only deploys prebuilt APKs.
-- **Generic engineering skills kept, then tailored.** `how`, `why`, `unslop`, `tdd`, `architect`, `arena`, `swarm`, `interrogate`, the 21 `principle-*` leaves, and the playbook machine remain. Opinionated Android/Kotlin overlays live in `stuc-mode`, `references/android-opinions.md`, and a few principle leaves — project-agnostic wording, evidence ids (`P#`).
-- **TypeScript pack dropped.** There is no `typescript-best-practices/`. Kotlin type/API discipline is `kotlin-best-practices` plus chrisbanes Kotlin leaves by **name**.
-- **New verification and Kotlin glue (this plugin).** `android-verify` (Drive loop), `kotlin-best-practices` (routing + overlays). `gradle-run` and `kotlin-control-flow` are copies of existing stuc-owned tooling, not upstream leaves.
-- **Upstreams referenced, not vendored.** `using-chrisbanes-skills` and `using-android-skills` route to leaf **names** and fail closed. Manifest `skills:` / `agents:` paths stay inside this directory. Official `android-cli` is named, never pasted.
+- **Generic engineering skills kept, then tailored.** `how`, `why`, `unslop`, and `architect` are rewritten for this bar: simplest change, copy the last screen, no four-model bakeoff on small diffs, host-agnostic git (`gh`/`glab`), Jira/GitHub Issues, name the command that ran. `tdd`, `arena`, `swarm`, `interrogate`, the 21 `principle-*` leaves, and the playbook machine remain. Opinionated Android/Kotlin overlays live in `stuc-mode`, `references/android-opinions.md`, and a few principle leaves — project-agnostic wording, evidence ids (`P#`).
+- **TypeScript pack dropped.** There is no `typescript-best-practices/`. Kotlin type/API discipline is `kotlin-best-practices` plus chrisbanes Kotlin clusters by **name**.
+- **New verification and Kotlin glue (this plugin).** `android-verify` (Drive loop), `kotlin-best-practices` (routing + overlays). `gradle-run` and `kotlin-control-flow` are **not** shipped here; they are chrisbanes skills on HEAD.
+- **Upstreams referenced, not vendored.** `using-chrisbanes-skills` and `using-android-skills` route to current **names** and fail closed. Manifest `skills:` / `agents:` paths stay inside this directory. Official `android-cli` is named, never pasted.
 - **Verification contract.** Do not claim device/screenshot coverage that was not run. Name Gradle tasks, `android` commands, and devices. One device serial per run (`principle-separate-before-serializing-shared-state`).
 - **Multi-agent packaging.** pstack ships Cursor (`.cursor-plugin/`) only. This directory also has `.claude-plugin/` (with `dependencies`) and `.codex-plugin/` pointing at the same `skills/` tree.
 
@@ -60,9 +69,9 @@ Concrete, from this tree plus the intake spec. Not a restatement of pstack skill
 
 - **Renames.** `poteto-mode` → `stuc-mode`; `setup-pstack` → `setup-stuc` (writes `~/.cursor/rules/stuc-stack-models.mdc`); `poteto-agent` → `stuc-agent`.
 - **No Benny.** `automations/benny/` is not in this tree.
-- **Glue skill names.** `using-chrisbanes-skills`, `using-android-skills`, `android-verify`, `kotlin-best-practices`, plus `gradle-run` / `kotlin-control-flow`.
-- **Cursor vs Claude deps.** Cursor cannot declare plugin dependencies; enablement is `.cursor/settings.json` plus skill-name fail-closed. Claude Code lists `chrisbanes-skills` and `android-skills`. Codex has no plugin deps; `AGENTS.md` requires the same upstreams.
+- **Glue skill names.** `using-chrisbanes-skills`, `using-android-skills`, `android-verify`, `kotlin-best-practices`. Chrisbanes owns `gradle-run` / `kotlin-control-flow` / Compose and Kotlin clusters.
+- **Cursor vs Claude deps.** Cursor cannot declare plugin dependencies; enablement is `.cursor/settings.json` plus skill-name fail-closed plus the local symlink. Claude Code lists `chrisbanes-skills` and `android-skills`. Codex has no plugin deps; `AGENTS.md` requires the same upstreams.
 - **Guide filename.** `docs/guide/02-stuc-mode.md` (not `02-poteto-mode.md`).
 - **No pstack guide art.** Copied `docs/guide/images/*.jpg` were deleted; markdown image embeds were removed.
 - **Playbook git paths.** Trunk re-reads use `plugins/stuc-stack/skills/...`, not a `pstack/` prefix.
-- **Not in this plugin (deferred, may remain under `.agents/skills/` for this app):** `to-plan`, `shepherd`, `implement-with-subagents`, `run-github-project`, `grounded-writing`, Graphify, skydoves testing pack.
+- **Not in this plugin:** chrisbanes workflow extras (`to-plan`, `shepherd`, `implement-with-subagents`, `run-github-project`, `grounded-writing`) stay upstream. Install via `npx skills add chrisbanes/skills`. Local `~/.agents/skills/` (or this repo’s gitignored `.agents/skills/`) is the install location, not a vendor tree.

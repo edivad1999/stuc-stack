@@ -24,7 +24,7 @@ Remaining triggers:
 - Nontrivial change, architecture decision, or "are we sure?" → the **how** skill.
 - About to `AskQuestion` on a "which approach", "how should I", or "what should this do" fork → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Sketch it via the Prototype playbook (`playbooks/prototype.md`) and let the result decide. If the task is a read-only Investigation whose deliverable is a cited answer, stay in it and answer from the evidence rather than building a sketch. Reserve the question for a genuine product or preference call no experiment can settle. The ask is the slow path. A throwaway probe usually answers faster, and it hands the human a result to react to instead of a decision to make.
 - Any code → name the data shape first, and choose its organizing structure per **principle-model-the-domain**.
-- Code crossing a function boundary → the **architect** skill, parallel design exploration before implementing.
+- Novel ownership or layering with **no in-repo precedent** (or the user asked to design first) → the **architect** skill. Copy the last similar screen and take the smallest diff otherwise. Do **not** run architect because a change crosses a function boundary. (P1, P8, P30)
 - Parallel fan-out → the **swarm** skill for coverage matrices, races, gauntlets, and exploration partitions. Use **arena** for design or code bakeoffs with base selection and grafting.
 - Contested design → the **interrogate** skill (multi-model adversarial) before shipping.
 - Nontrivial multi-step → write the throughput checkpoint (Feature step 3).
@@ -33,7 +33,7 @@ Remaining triggers:
 - Before commit → the `deslop` skill from the `cursor-team-kit` plugin (`/deslop`).
 - Before review → the **no-comments** skill (`/no-comments`).
 - Shipping Android UI / device behavior → the **android-verify** skill (Gradle assemble, then the `android` binary). Load the official `android-cli` skill; do not vendor it. Non-Android UI/CLI still uses `cursor-team-kit` `control-ui` / `control-cli` if that plugin is installed. For bug fixes, reproduce first on the same surface yourself; hand to the user only under the narrow Bug fix step 1 exception. (P18)
-- Kotlin/Compose **design** (state, effects, slots, Flow, coroutines, value classes, KMP expect/actual) → **using-chrisbanes-skills**, then the named upstream leaf. Stop if those names do not resolve.
+- Kotlin/Compose **design** (state, effects, slots, Flow, coroutines, API/types, KMP expect/actual) → **using-chrisbanes-skills**, then the named chrisbanes **cluster** (`compose-state-and-effects`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, …). Stop if those names do not resolve.
 - Google product/migration workflows (AGP, Nav3, edge-to-edge, R8, Play, CameraX, …) → **using-android-skills**.
 - Editing `.kt` types, JSON stacks, ViewModel flags, or KMP module boundaries → **kotlin-best-practices** plus `references/android-opinions.md` in this skill directory.
 - Git: the user is the author; never `Co-authored-by` the agent. (P27) Rebase, force-push, and destructive git only with explicit permission in this conversation. (P26) Detect the git host from remotes (`gh`, `glab`, Graphite `gt` if present). Do not require a named host.
@@ -63,7 +63,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 - **Model the Domain** (**principle-model-the-domain**). Writing stateful logic, or code that branches a lot or repeats a shape assumption across files. Encode the domain in a structure (state machine, typed model, table or registry, reducer, boundary, the right collection) instead of scattered conditionals.
 - **Boundary Discipline** (**principle-boundary-discipline**). Wiring validation, error handling, or framework adapters. Guards at system boundaries, trust internal types, keep business logic pure. Android overlay: app/UI modules do not import data-layer DTOs. (P2)
-- **Type System Discipline** (**principle-type-system-discipline**). Designing types or a signature in any typed language. Make illegal states unrepresentable, brand primitives, parse external data at boundaries. Kotlin syntax: chrisbanes `kotlin-types-value-class` via **kotlin-best-practices**, not a TypeScript essay.
+- **Type System Discipline** (**principle-type-system-discipline**). Designing types or a signature. Make illegal states unrepresentable, brand primitives, parse external data at boundaries. Kotlin: sealed classes and exhaustive `when`; syntax via chrisbanes `kotlin-api-design`.
 - **Make Operations Idempotent** (**principle-make-operations-idempotent**). Designing commands, lifecycle steps, or loops that run amid crashes and retries. Converge to the same end state.
 - **Migrate Callers Then Delete Legacy APIs** (**principle-migrate-callers-then-delete-legacy-apis**). Introducing a new internal API while old callers exist. Migrate and delete in one wave.
 - **Separate Before Serializing Shared State** (**principle-separate-before-serializing-shared-state**). Concurrent actors might write the same file, branch, key, or object. Eliminate the sharing first. Android overlay: one emulator serial per run; refuse double-drive.
@@ -85,9 +85,11 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Autonomy
 
-**Just do it.** Use any MCP tool. Reversible work and external actions (team chat, ticket updates, kicking off evals) proceed without asking.
+**Just do it.** Use any MCP tool. Reversible local edits proceed without asking.
 
 **Always pause** for irreversible writes: force-push to shared branches, deploys, data deletion, customer messages.
+
+**Also pause** (ask, do not pick) for module-graph / extraction-shape / flavor-policy forks: library vs dynamic feature, tracking api+impl vs impl-in-app, shared app-layer, flavors on every module, Robolectric expansion, error-handling unification. See `references/android-opinions.md`. Never-block-on-the-human does not eat those asks.
 
 **Session overrides:** "Don't stop" / "going to bed" / "run until done" / "be fully autonomous" → keep going.
 
@@ -120,7 +122,7 @@ Comments follow the same rule as the reply. Write them clean as you go; a flat "
 
 ## Playbooks
 
-Your first todolist actions are the matched playbook's steps, copied in verbatim, before any task-specific todos and before you reason about the task. The failure mode is reading a playbook then writing a bespoke plan that drops its named steps (`architect`, the throughput checkpoint). A step you choose not to do stays in the list with a one-line `skip: <reason>`; skipping silently is not allowed. Match the task to a playbook below, open its file, and copy its steps in verbatim.
+Your first todolist actions are the matched playbook's steps, copied in verbatim, before any task-specific todos and before you reason about the task. The failure mode is reading a playbook then writing a bespoke plan that drops its named steps (the throughput checkpoint). Architect is **not** a default named step; skip it with `architect skipped: <reason>` unless ownership/layering is novel. A step you choose not to do stays in the list with a one-line `skip: <reason>`; skipping silently is not allowed. Match the task to a playbook below, open its file, and copy its steps in verbatim.
 
 A large or cross-cutting effort (a migration across many call sites, an ambitious multi-part change), or work the user steps away from to trust later, routes to the **figure-it-out** skill even when a narrower playbook like Feature fits. Use **figure-it-out** whenever no bundled playbook fits. It designs a bespoke, rigorous playbook for the task. A standing project-scale program (multi-day, many stacked PRs, a fleet of subagents under one coordinator) routes to **Orchestrate** instead; figure-it-out designs one bespoke run, orchestrate runs the program.
 
@@ -137,7 +139,7 @@ A large or cross-cutting effort (a migration across many call sites, an ambitiou
 - **Authoring or modifying a skill.** Writing or editing a SKILL.md. `playbooks/authoring-a-skill.md`.
 - **Eval.** Testing how a skill, structure, or prompt change affects agent behavior before promoting it. `playbooks/eval.md`.
 - **Babysit.** Driving a PR or a stack to merge-ready: conflicts, review threads, CI. `playbooks/babysit.md`.
-- **Shipping.** The half after Babysit. Independently verifying a green stack, then landing the contiguous verified run with Graphite merge-when-ready. `playbooks/shipping.md`.
+- **Shipping.** The half after Babysit. Independently verifying a green stack, then landing the contiguous verified run. Graphite steps only if `gt` is already in use. `playbooks/shipping.md`.
 - **Autonomous run.** A long task to drive to completion without stopping ("run until done", "/loop until X"). `playbooks/autonomous-run.md`.
 - **Orchestrate.** A standing project handed to one coordinator chat: multi-day, many stacked PRs, dozens to hundreds of subagents, minimal human turns ("run this whole project", "own this migration until it lands"). Distinct from Autonomous run, which drives one task to a predicate; work one agent could finish inside the session's budget routes there, not here, however program-shaped the phrasing sounds. `playbooks/orchestrate.md`.
 - **Autopilot-full.** A queue of independent PRs run to merged with full autonomy: one owner per PR carries build through merge, and the root swarm-verifies each merge-ready head before its owner merges ("autopilot this queue", "full autopilot", one-owner-per-PR programs). `playbooks/autopilot-full.md`.

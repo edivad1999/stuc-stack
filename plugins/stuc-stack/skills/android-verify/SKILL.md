@@ -44,7 +44,7 @@ One serial per run. Refuse to double-drive a shared emulator without a lock. and
 
 1. Doctor: `which android`; `android -V`; `android info`; `adb devices`.
 2. `android emulator list`. Start a profile if nothing is ready. Wait until start reports ready. Pass `--device` afterward.
-3. **Gradle assemble** via `gradle-run` if that skill is installed, else the project wrapper. Not `android run` to compile. (`gradle-run` is this plugin's Gradle wrapper, not an android/skills leaf.)
+3. **Gradle assemble** via chrisbanes `gradle-run` if that skill is installed, else the project wrapper. Not `android run` to compile. (`gradle-run` is a chrisbanes skill, not this plugin.)
 4. `android describe [--project_dir]` for APK paths.
 5. `android run --apks=<paths> [--device=] [--activity=]`.
 

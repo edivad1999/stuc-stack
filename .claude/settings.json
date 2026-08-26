@@ -5,6 +5,18 @@
         "source": "directory",
         "path": "./plugins/stuc-stack"
       }
+    },
+    "chrisbanes-skills": {
+      "source": {
+        "source": "github",
+        "repo": "chrisbanes/skills"
+      }
+    },
+    "android-skills": {
+      "source": {
+        "source": "github",
+        "repo": "android/skills"
+      }
     }
   },
   "enabledPlugins": {

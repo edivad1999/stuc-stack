@@ -20,10 +20,24 @@ Check, do not vendor:
 
 | Need | How to check | If missing, print |
 |---|---|---|
-| `android` binary | `which android` / `android -V` | https://developer.android.com/tools/agents/android-cli/download |
-| Official `android-cli` skill | skill name resolves (not a file under this plugin) | `android init` |
-| chrisbanes leaves | e.g. `compose-state-authoring` resolves | `npx skills add chrisbanes/skills` and Claude marketplace install if they use Claude |
-| android/skills leaves | e.g. `edge-to-edge` resolves | `android skills add --all` |
+| `android` binary | `which android` and `android -V` (binary exists; this is not a device proof) | https://developer.android.com/tools/agents/android-cli/download |
+| Official `android-cli` skill | skill name `android-cli` resolves (not a file under this plugin) | `android init` |
+| chrisbanes HEAD clusters | `compose-state-and-effects` resolves. Also probe `kotlin-api-design`, `kotlin-control-flow`, `gradle-run` if those tasks are in scope. Do **not** probe removed leaves such as `compose-state-authoring`. | `npx skills add chrisbanes/skills` (plus host-specific install below) |
+| android/skills leaves | `edge-to-edge` resolves | `android init` then `android skills add --all` (Codex: `android skills add --agent=codex --all`) |
+
+Host-specific chrisbanes install if `npx skills add` is not how this agent loads skills:
+
+```
+# Claude Code
+/plugin marketplace add chrisbanes/skills
+/plugin install chrisbanes-skills@chrisbanes-skills
+
+# Codex
+codex plugin marketplace add chrisbanes/skills --ref main
+codex plugin add chrisbanes-skills@chrisbanes-skills
+```
+
+Fail closed on missing **current** names. If `compose-state-authoring` is absent but `compose-state-and-effects` is present, that install is healthy. If `compose-state-and-effects` is absent, the stack is **not ready** even if old cache leaves exist.
 
 Optional Cursor settings in the **consuming** project (not a substitute for skills.sh):
 

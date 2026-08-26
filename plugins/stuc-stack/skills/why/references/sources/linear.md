@@ -1,4 +1,6 @@
-# Linear Tickets
+# Tickets (Jira, GitHub Issues, Linear)
+
+Adapt this playbook to the tracker MCP that is actually installed. Prefer **Jira or GitHub Issues** when those exist. Linear is only an example MCP, not the default for this stack.
 
 ## What this source contains
 
@@ -10,11 +12,11 @@
 - Status updates that explain scope changes
 - Attachments and linked GitHub PRs
 
-Linear is where the product/business context often lives: the "we're doing this because customer X asked" or "this is for the Q3 compliance initiative" layer.
+The product/business context often lives here: the "we're doing this because customer X asked" layer.
 
 ## How to search it
 
-Use the Linear MCP.
+Use the installed ticket MCP (Jira, GitHub Issues, or Linear). Adapt tool names.
 
 1. **Start with linked tickets.** If the seed commits or PRs reference ticket IDs (e.g., `ENG-1234`, `[BUG-567]`), fetch those first with `get_issue`. Read the full issue including comments.
 2. **List related issues by keyword.** Use `list_issues` with text search for the feature name, key symbol, or business term. Try multiple phrasings.

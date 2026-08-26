@@ -23,6 +23,8 @@ android init
 android skills add --all
 ```
 
+Codex: `android skills add --agent=codex --all`.
+
 Do not paste a remembered Google procedure. Do not vendor the skill. Do not treat the skydoves testing pack (if present on disk) as android/skills.
 
 ## Routing (HEAD leaf names)

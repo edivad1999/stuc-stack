@@ -22,7 +22,7 @@ You are reviewing the architecture of a codebase subsystem. An explanation of ho
 
 Read the files listed above. Use the explanation as a map, but form your own opinions from the code itself. The explanation might miss things or frame them charitably.
 
-Find architectural problems, not line-level bugs or style issues. Ask whether this subsystem is built well for what it needs to do and how it will need to evolve.
+Find spaghetti, real duplication, and quality issues on this subsystem and any provided diff. Roast niche or speculative architecture. Do not nitpick preexisting code. Do not recommend a restructure that is not on the ticket.
 
 For each finding:
 
@@ -36,10 +36,10 @@ For each finding:
 
 ## What to Avoid
 
-- Line-level code review (not your job here)
-- Suggesting rewrites without demonstrating a problem with the current approach
-- "This could use more abstraction" without showing what the abstraction would actually solve
-- Flagging intentional tradeoffs with clear benefits as issues
+- Line-level style nits and preexisting issues unrelated to the question
+- Suggesting rewrites without demonstrating a problem this change introduced
+- "This could use more abstraction" or a four-model redesign
+- Flagging intentional tradeoffs, copy-the-last-screen patterns, or off-ticket restructures as issues
 
 If the architecture is sound, say so. An empty critique is a valid outcome.
 

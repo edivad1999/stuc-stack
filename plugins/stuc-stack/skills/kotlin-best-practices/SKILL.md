@@ -3,12 +3,12 @@ name: kotlin-best-practices
 description: >-
   Opinionated Kotlin type and API discipline for this stack. Use when editing
   .kt/.kts types, signatures, Flow/StateFlow, coroutines, KMP boundaries, or
-  JSON/codegen. Loads chrisbanes Kotlin leaves by name; does not replace them.
+  JSON/codegen. Loads chrisbanes Kotlin clusters by name; does not replace them.
 ---
 
 # Kotlin best practices
 
-Syntax and coroutine/Flow/value-class rules live in **chrisbanes/skills**. This file adds opinionated overlays and fail-closed routing. Do not duplicate those leaves.
+Syntax and coroutine/Flow/API rules live in **chrisbanes/skills**. This file adds opinionated overlays and fail-closed routing. Do not duplicate those clusters.
 
 If a named chrisbanes skill does not resolve, stop and print `npx skills add chrisbanes/skills`. (P29)
 
@@ -16,13 +16,13 @@ If a named chrisbanes skill does not resolve, stop and print `npx skills add chr
 
 | Concern | Skill |
 |---|---|
-| Types, signatures, illegal states, exhaustive `when` at the type level | `principle-type-system-discipline` then `kotlin-types-value-class` |
-| `when` shape / guard conditions / smart casts | `kotlin-control-flow` (this plugin) |
-| State vs events, `stateIn`, one-shot delivery | `kotlin-flow-state-event-modeling` |
-| Scope ownership, cancellation, `runBlocking` | `kotlin-coroutines-structured-concurrency` |
-| expect/actual vs interfaces | `kotlin-multiplatform-expect-actual` |
+| Types, signatures, illegal states, exhaustive `when` at the type level | `principle-type-system-discipline` then chrisbanes `kotlin-api-design` |
+| `when` shape / guard conditions / smart casts | chrisbanes `kotlin-control-flow` |
+| State vs events, `stateIn`, one-shot delivery, scopes, cancellation, `runBlocking` | chrisbanes `kotlin-concurrency-and-flow` |
+| expect/actual vs interfaces, function placement, value classes | chrisbanes `kotlin-api-design` |
+| Agent-initiated Gradle assemble / check | chrisbanes `gradle-run` |
 
-Compose UI state/effects/slots: `using-chrisbanes-skills`, not this file.
+Compose UI state/effects/slots/perf: `using-chrisbanes-skills`, not this file.
 
 ## Overlays (evidence-backed)
 
@@ -30,9 +30,11 @@ Compose UI state/effects/slots: `using-chrisbanes-skills`, not this file.
 
 **App/UI modules never import data-layer DTOs or entities.** Domain models and interfaces on the app-facing side; data maps and implements repositories. Do not add new app→data model imports. (P2)
 
-**KMP.** When migrating, share data/domain. Keep resources native unless the user says otherwise. Do not assume shared Compose UI. Close with a real Android assemble. Load `kotlin-multiplatform-expect-actual`. (P5)
+**Ask, do not pick** library vs dynamic-feature extraction, tracking module shape, shared app-layer, flavors-on-every-module, Robolectric expansion, or error-handling unification. See `stuc-mode/references/android-opinions.md`.
 
-**LiveData → StateFlow** when touching a screen that still uses LiveData, including result wrappers if the project has them. Load `kotlin-flow-state-event-modeling`. (P10)
+**KMP.** When migrating, share data/domain. Keep resources native unless the user says otherwise. Do not assume shared Compose UI. Close with a real Android assemble. Load `kotlin-api-design`. If the user points at a sibling repo, copy that Gradle/KMP layout. (P5)
+
+**LiveData → StateFlow** when touching a screen that still uses LiveData, including result wrappers if the project has them. Load `kotlin-concurrency-and-flow`. (P10)
 
 **Nested routes:** new ViewModel instance per back-stack entry. (P11)
 

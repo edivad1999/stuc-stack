@@ -3,7 +3,7 @@
 ## What this source contains
 
 - Commit history (messages, dates, authors, diffs)
-- PR descriptions, review comments, and discussion threads (via `gh`)
+- PR or MR descriptions, review comments, and discussion threads (via `gh` or `glab`)
 - Inline code comments, TODOs, FIXMEs, deprecation notes
 - ADRs (architectural decision records) if the repo keeps them
 - Tests. Names and assertions often encode the edge cases that motivated a change
@@ -37,16 +37,18 @@ git show <hash>
 git log <old>..<new> -p -- <file>
 ```
 
-For each substantive commit, pull the PR context:
+For each substantive commit, pull the PR/MR context. Detect the host from remotes.
 
 ```bash
-# Find the PR number from the merge commit or branch
+# Find the PR/MR number from the merge commit or branch
 git log -1 --format=%B <hash>
 
-# Full PR context: body, review comments, linked issues
+# GitHub
 gh pr view <number> --json title,body,author,createdAt,mergedAt,labels,closingIssuesReferences,comments,reviews,files
 
-# The --json reviews and comments fields are where the real signal is
+# GitLab
+glab mr view <number>
+glab ci status
 ```
 
 Look for out-of-band docs:

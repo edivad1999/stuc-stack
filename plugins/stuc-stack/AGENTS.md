@@ -1,14 +1,26 @@
 # stuc-stack
 
-Enable this plugin, then install upstreams. Do not copy those trees into git.
+Enable this plugin, then install upstreams. Do not copy those trees into git. `.agents/skills/` (if present in a host repo) is an install location and must stay gitignored.
 
 Required:
 
-- `npx skills add chrisbanes/skills`
-- `android init` and `android skills add --all`
-- `android` on PATH (https://developer.android.com/tools/agents/android-cli)
+```
+npx skills add chrisbanes/skills
+android init
+android skills add --all
+```
 
-Cursor has no plugin-to-plugin dependencies. Claude Code can declare `chrisbanes-skills` and `android-skills`.
+Put `android` on PATH (https://developer.android.com/tools/agents/android-cli).
+
+Cursor has no plugin-to-plugin dependencies. Local load: symlink this directory to `~/.cursor/plugins/local/stuc-stack`. Claude Code can declare `chrisbanes-skills` and `android-skills`. Codex:
+
+```
+codex plugin marketplace add chrisbanes/skills --ref main
+codex plugin add chrisbanes-skills@chrisbanes-skills
+android skills add --agent=codex --all
+```
+
+chrisbanes HEAD clusters include `compose-state-and-effects`, `compose-performance`, `compose-component-design`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, `kotlin-control-flow`, `gradle-run`. `/setup-stuc` fails closed if `compose-state-and-effects` does not resolve.
 
 Entry: `/stuc-mode` (or the `stuc-mode` skill). Verification of Android UI: `android-verify`. Setup/doctor: `setup-stuc`.
 
