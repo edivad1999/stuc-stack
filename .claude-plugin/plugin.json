@@ -7,7 +7,6 @@
   },
   "license": "MIT",
   "skills": "./skills/",
-  "agents": "./agents/",
   "dependencies": [
     "chrisbanes-skills",
     "android-skills"
