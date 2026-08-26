@@ -1,6 +1,6 @@
 # The stuc-stack guide
 
-`/stuc-mode` picks the playbook, routes Compose/Kotlin design to chrisbanes skill **names**, Google workflows to android/skills **names**, and Android device proof to `android-verify`. This guide teaches that habit.
+`/stuc-mode` picks the playbook, routes Compose/Kotlin design through `stuc-chrisbanes` then chrisbanes skill **names**, Google workflows to android/skills **names**, and Android device proof to `android-verify`. This guide teaches that habit.
 
 Here's what you'll learn:
 

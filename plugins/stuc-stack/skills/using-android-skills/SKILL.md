@@ -9,7 +9,7 @@ description: >-
 
 # Using android/skills
 
-chrisbanes owns everyday Compose/Kotlin design. android/skills owns Google workflows where agents underperform. Do not merge the two. Do not copy android/skills bodies into this repo. (research split; P29)
+chrisbanes owns everyday Compose/Kotlin design (this plugin: `stuc-chrisbanes`, then the installed router `using-chrisbanes-skills`). android/skills owns Google workflows where agents underperform. Do not merge the two. Do not copy android/skills bodies into this repo. (research split; P29)
 
 ## Fail closed
 

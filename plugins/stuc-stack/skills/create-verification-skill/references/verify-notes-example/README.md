@@ -4,10 +4,10 @@ Fictional Android notes app. Not a real product. The **shape** is what agents co
 
 Modeled on [poteto/verification-skill-example](https://github.com/poteto/verification-skill-example) (`verify-atlas` + `features/` map). Mapped to this stack:
 
-| Example (desktop / Node) | This sample (Android) |
+| Shape to copy | This sample (Android) |
 |---|---|
-| `control-atlas.mjs` / CDP | **android-verify** + the `android` binary (official `android-cli` skill). No driver script vendored. |
-| `check.sh` unit+e2e | Gradle assemble / unit tests; device proof is `android describe` / `run` / `layout` / `screen` |
+| UI driver | **android-verify** + the `android` binary (official `android-cli` skill). No driver script vendored. |
+| Host unit+e2e | Gradle assemble / unit tests; device proof is `android describe` / `run` / `layout` / `screen` |
 | Isolated `--checkout` | One emulator **serial** this run started. Do not drive the user's physical device. |
 | `doctor` before drive | `which android`, `android -V`, `adb devices`, assemble receipt |
 | Feature map four H2s | Same four H2s. Harness name is `android-verify`, not `control-*` |

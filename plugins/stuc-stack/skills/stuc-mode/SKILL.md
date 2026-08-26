@@ -33,7 +33,7 @@ Remaining triggers:
 - Before commit → the `deslop` skill from the `cursor-team-kit` plugin (`/deslop`).
 - Before review → the **no-comments** skill (`/no-comments`).
 - Shipping Android UI / device behavior → the **android-verify** skill (Gradle assemble, then the `android` binary). Load the official `android-cli` skill; do not vendor it. Non-Android UI/CLI still uses `cursor-team-kit` `control-ui` / `control-cli` if that plugin is installed. For bug fixes, reproduce first on the same surface yourself; hand to the user only under the narrow Bug fix step 1 exception. (P18)
-- Kotlin/Compose **design** (state, effects, slots, Flow, coroutines, API/types, KMP expect/actual) → **using-chrisbanes-skills**, then the named chrisbanes **cluster** (`compose-state-and-effects`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, …). Stop if those names do not resolve.
+- Kotlin/Compose **design** (state, effects, slots, Flow, coroutines, API/types, KMP expect/actual) → **stuc-chrisbanes** (install / fail closed), then the installed chrisbanes router **using-chrisbanes-skills**, then the named **cluster** (`compose-state-and-effects`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, …). Stop if those names do not resolve.
 - Google product/migration workflows (AGP, Nav3, edge-to-edge, R8, Play, CameraX, …) → **using-android-skills**.
 - Editing `.kt` types, JSON stacks, ViewModel flags, or KMP module boundaries → **kotlin-best-practices** plus `references/android-opinions.md` in this skill directory.
 - Git: the user is the author; never `Co-authored-by` the agent. (P27) Rebase, force-push, and destructive git only with explicit permission in this conversation. (P26) Detect the git host from remotes (`gh`, `glab`, Graphite `gt` if present). Do not require a named host.
@@ -108,7 +108,7 @@ You own every subagent's work. Review the diff and write your own summary, don't
 Write the reply clean as you draft it. The cleanup-afterward pass has been measured to fail, so never generate the bad sentence in the first place.
 
 - **Short declarative sentences.** One thought per sentence, ended with a period.
-- **The long-dash character is banned outright.** Two cases. A file-list bullet joining a filename to its description with a dash. Write it as a sentence ("`main.js` owns persistence and the IPC handlers"). A bold section header joined to its text by a dash. Write the header as its own sentence ("**Verification.** End to end via CDP").
+- **The long-dash character is banned outright.** Two cases. A file-list bullet joining a filename to its description with a dash. Write it as a sentence ("`:app` owns the launcher activity and the Compose host"). A bold section header joined to its text by a dash. Write the header as its own sentence ("**Verification.** End to end via the `android` CLI").
 - **A colon as a mid-sentence connector is also out** (unslop rule 14). A colon before a list is fine.
 - **Terse is not an excuse to drop content.** Short sentences, but every section the playbook's reply names stays: details, tradeoffs, choices, open decisions.
 - **Frame impact for the consumer and the maintainer.** Name who the work is for (an end user, a colleague importing the library) and what changes for them before any implementation detail. Then what the next engineer who owns this code inherits. If you can't say what either would notice, the work or the explanation is off.

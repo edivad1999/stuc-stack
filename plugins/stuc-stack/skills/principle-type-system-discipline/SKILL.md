@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 The type checker is a proof assistant. Use it to eliminate impossible states, mismatched primitives, and unhandled variants at compile time. A case the types let you ignore becomes a runtime failure the compiler could have stopped. Prefer defining errors and special cases out of existence over proliferating handlers.
 
-Kotlin syntax and value-class / expect-actual rules are chrisbanes `kotlin-api-design` (load via **kotlin-best-practices** / **using-chrisbanes-skills**). App/data, JSON stack, and handler-name overlays live in **kotlin-best-practices**, not here.
+Kotlin syntax and value-class / expect-actual rules are chrisbanes `kotlin-api-design` (load via **kotlin-best-practices** / **stuc-chrisbanes**). App/data, JSON stack, and handler-name overlays live in **kotlin-best-practices**, not here.
 
 **The patterns:**
 

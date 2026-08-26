@@ -22,7 +22,7 @@ Check, do not vendor:
 |---|---|---|
 | `android` binary | `which android` and `android -V` (binary exists; this is not a device proof) | https://developer.android.com/tools/agents/android-cli/download |
 | Official `android-cli` skill | skill name `android-cli` resolves (not a file under this plugin) | `android init` |
-| chrisbanes HEAD clusters | `compose-state-and-effects` resolves. Also probe `kotlin-api-design`, `kotlin-control-flow`, `gradle-run` if those tasks are in scope. Do **not** probe removed leaves such as `compose-state-authoring`. | `npx skills add chrisbanes/skills` (plus host-specific install below) |
+| chrisbanes HEAD clusters + router | Installed `using-chrisbanes-skills` resolves **outside this plugin** (chrisbanes HEAD router). `compose-state-and-effects` resolves the same way. This plugin's glue is `stuc-chrisbanes`; do not count a same-named file under `plugins/stuc-stack/` as the router. Also probe `kotlin-api-design`, `kotlin-control-flow`, `gradle-run` if those tasks are in scope. Do **not** probe removed leaves such as `compose-state-authoring`. | `npx skills add chrisbanes/skills` (plus host-specific install below) |
 | android/skills leaves | `edge-to-edge` resolves | `android init` then `android skills add --all` (Codex: `android skills add --agent=codex --all`) |
 
 Host-specific chrisbanes install if `npx skills add` is not how this agent loads skills:

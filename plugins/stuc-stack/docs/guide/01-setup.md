@@ -35,7 +35,7 @@ Claude Code may auto-install `chrisbanes-skills` and `android-skills` from this 
 /setup-stuc
 ```
 
-[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc` and checks that `compose-state-and-effects`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve (`which android` / `android -V`). That doctor is not a device proof.
+[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc` and checks that the installed chrisbanes router `using-chrisbanes-skills` (not this plugin's `stuc-chrisbanes` glue), `compose-state-and-effects`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve (`which android` / `android -V`). That doctor is not a device proof.
 
 You only override what you care about. `inherit-parent` or `auto` means the subagent inherits the parent chat model.
 

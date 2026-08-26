@@ -20,7 +20,7 @@ codex plugin add chrisbanes-skills@chrisbanes-skills
 android skills add --agent=codex --all
 ```
 
-chrisbanes HEAD clusters include `compose-state-and-effects`, `compose-performance`, `compose-component-design`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, `kotlin-control-flow`, `gradle-run`. `/setup-stuc` fails closed if `compose-state-and-effects` does not resolve.
+chrisbanes HEAD clusters include `compose-state-and-effects`, `compose-performance`, `compose-component-design`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, `kotlin-control-flow`, `gradle-run`. This plugin's glue is `stuc-chrisbanes` (require install, fail closed, when). Leaf/cluster routing is the installed chrisbanes skill `using-chrisbanes-skills`. `/setup-stuc` fails closed if `compose-state-and-effects` or that installed router does not resolve.
 
 Entry: `/stuc-mode` (or the `stuc-mode` skill). Verification of Android UI: `android-verify`. Setup/doctor: `setup-stuc`.
 

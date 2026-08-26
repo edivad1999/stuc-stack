@@ -22,7 +22,7 @@ If a named chrisbanes skill does not resolve, stop and print `npx skills add chr
 | expect/actual vs interfaces, function placement, value classes | chrisbanes `kotlin-api-design` |
 | Agent-initiated Gradle assemble / check | chrisbanes `gradle-run` |
 
-Compose UI state/effects/slots/perf: `using-chrisbanes-skills`, not this file.
+Compose UI state/effects/slots/perf: `stuc-chrisbanes` then the installed chrisbanes router `using-chrisbanes-skills`, not this file.
 
 ## Overlays (evidence-backed)
 
