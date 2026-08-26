@@ -3,7 +3,7 @@
     "stuc-stack": {
       "source": {
         "source": "directory",
-        "path": "./plugins/stuc-stack"
+        "path": "."
       }
     },
     "chrisbanes-skills": {

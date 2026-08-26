@@ -4,13 +4,13 @@ Install this plugin, install upstreams, pick models, then run a first task. `/se
 
 ## Install this plugin
 
-This repo hosts the plugin at `plugins/stuc-stack`. Enable it for your agent (Cursor `.cursor-plugin/`, Claude `.claude-plugin/`, Codex `.codex-plugin/`). Cursor has no `dependencies` field in `plugin.json`.
+This repo is the plugin. Enable it for your agent (Cursor `.cursor-plugin/`, Claude `.claude-plugin/`, Codex `.codex-plugin/`). Cursor has no `dependencies` field in `plugin.json`.
 
 Cursor local load (not committed):
 
 ```text
 mkdir -p ~/.cursor/plugins/local
-ln -sfn "$(pwd)/plugins/stuc-stack" ~/.cursor/plugins/local/stuc-stack
+ln -sfn "$(pwd)" ~/.cursor/plugins/local/stuc-stack
 ```
 
 Then reload the window and enable third-party plugins if local plugins stay hidden.

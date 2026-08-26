@@ -5,7 +5,7 @@
       "name": "stuc-stack",
       "source": {
         "source": "local",
-        "path": "./plugins/stuc-stack"
+        "path": "."
       },
       "policy": {
         "installation": "INSTALLED_BY_DEFAULT",
