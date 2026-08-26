@@ -16,6 +16,8 @@ By default it proceeds straight from the synthesized design into implementation.
 /architect with checkpoint. stop and show me before implementing.
 ```
 
+Copy-the-last-screen and smallest-diff work may skip `/architect` with `architect skipped: copy last similar screen`. That is an exception, not a different design skill.
+
 ## Fan out attempts with `/arena`
 
 ```text
@@ -69,12 +71,11 @@ Read the dismissals too. The lead is a pragmatic senior engineer, not an oracle,
 You might be wondering whether every change needs this. No. Most changes need none of it. A rough ladder:
 
 - A small, finished change you're unsure about needs `/interrogate` alone.
-- Copy-the-last-screen and smallest-diff work skip `/architect`.
-- Novel ownership or layering with no in-repo precedent earns `/architect`. Function-boundary crossing is not enough.
+- A change that crosses function boundaries or moves ownership earns `/architect`, which brings `/arena` with it. Copy-the-last-screen / smallest-diff may skip.
 - A standalone decision where independent attempts would help, like naming, formats, or an algorithm, is `/arena` directly.
 - A coverage matrix, set of parallel checks, or race with declared arms is `/swarm`.
 - A contested design that's expensive to reverse gets `/architect`, then `/interrogate` before shipping.
 
-`/stuc-mode` already applies this ladder. Most Android work copies the last similar screen. Reach for these skills when you want more scrutiny than that default.
+`/stuc-mode` already applies this ladder. Boundary-crossing work triggers `/architect` on its own, so you reach for these directly mainly when you want more or less scrutiny than the default.
 
 Next: [Build and clean the change](./05-build-and-clean.md).

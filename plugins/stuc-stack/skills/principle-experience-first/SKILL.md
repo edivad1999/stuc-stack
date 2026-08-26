@@ -10,7 +10,7 @@ The product is the experience. Every technical decision either helps or hurts it
 
 - Say no to 1,000 things (every feature, control, and option must earn its place)
 - Ship less, ship better (polished experience with three features beats rough one with ten)
-- Copy in-app patterns and written plans before inventing UX (ticket / OpenAPI / design file beat a throwaway mock)
+- Prototype before committing (design decisions are cheaper in a throwaway Compose preview than production code)
 - Sweat the details (transitions, alignment, spacing, feedback, error states)
 - Tighten the core loop (every feature should serve the central workflow or get out of the way)
 

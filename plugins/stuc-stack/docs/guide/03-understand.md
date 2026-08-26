@@ -5,7 +5,7 @@ Editing code you don't understand is how subtle regressions ship. This stack giv
 ## Trace behavior with `/how`
 
 ```text
-/how do we dedupe notifications? is there an n+1 when we look up subscribers?
+/how does save after confirm work? is there an extra Flow collection on every tap?
 ```
 
 Ask the question you actually have. [`/how`](../../skills/how/SKILL.md) reads the code and answers at the level of a senior engineer onboarding you onto the subsystem, with the runtime flow, the key types, and the non-obvious parts. For a big subsystem it fans out two to four read-only explorers first. For a narrow question it just reads and explains.
@@ -13,7 +13,7 @@ Ask the question you actually have. [`/how`](../../skills/how/SKILL.md) reads th
 `/how` can also push back on the design. Ask for Critique mode when you suspect the structure itself:
 
 ```text
-/how explain the sync service, then critique its ownership boundaries
+/how explain the save pipeline, then critique its ownership boundaries
 ```
 
 The explanation comes first, so the critique stays grounded in how the thing really works.
@@ -21,7 +21,7 @@ The explanation comes first, so the critique stays grounded in how the thing rea
 ## Dig up history with `/why`
 
 ```text
-/why was the retry limit set to five? does the reason still hold?
+/why was LiveData kept on this screen? does the reason still hold?
 ```
 
 [`/why`](../../skills/why/SKILL.md) works like a detective on a cold case. It starts from source control, then queries whatever evidence categories your MCPs expose, such as the issue tracker, long-form docs, team chat, observability, error tracking, and analytics, all in parallel. The report cites everything, separates direct evidence from inference, and says "appears to" when the record is thin. A null result gets reported too, because "nobody wrote down why" is itself an answer.
@@ -31,7 +31,7 @@ The two compose naturally. `do why first then how` is a perfectly good prompt wh
 ## Actually understand it with `/teach`
 
 ```text
-/teach me how this PR changes retries. convince me it fixes the cause and not the symptom.
+/teach me how this PR changes save. convince me it fixes the cause and not the symptom.
 ```
 
 [`/teach`](../../skills/teach/SKILL.md) is for when a summary isn't enough. It runs `/how` and `/why`, for a small change maybe just one of them, and weaves the findings into a plain explanation that builds up diagram by diagram. The "convince me" framing is worth stealing. It turns the explanation into an argument you can poke at instead of a tour.

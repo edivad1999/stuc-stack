@@ -17,9 +17,6 @@ When a novel interaction or architectural decision has no established precedent,
 
 **When it doesn't:**
 - Mechanical implementation where the pattern is established
-- Copy-the-last-screen / smallest-diff work (P1, P8, P30)
 - Bug fixes or refactors with a clear target state
 - Changes where constraints dictate a single viable approach
-- Any change that merely crosses a function boundary
-
-Do not bake off four designs when the task is a small change.
+- Copy-the-last-screen / smallest-diff work, which is mechanical with an established in-repo pattern

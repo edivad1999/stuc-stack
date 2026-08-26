@@ -1,6 +1,4 @@
-# Tickets (Jira, GitHub Issues, Linear)
-
-Adapt this playbook to the tracker MCP that is actually installed. Prefer **Jira or GitHub Issues** when those exist. Linear is only an example MCP, not the default for this stack.
+# Linear Tickets
 
 ## What this source contains
 
@@ -12,13 +10,13 @@ Adapt this playbook to the tracker MCP that is actually installed. Prefer **Jira
 - Status updates that explain scope changes
 - Attachments and linked GitHub PRs
 
-The product/business context often lives here: the "we're doing this because customer X asked" layer.
+Linear is where the product/business context often lives: the "we're doing this because customer X asked" or "this is for the Q3 compliance initiative" layer. Adapt the same search procedure for Jira, GitHub Issues, Plane, or Shortcut when that is the installed tracker MCP.
 
 ## How to search it
 
-Use the installed ticket MCP (Jira, GitHub Issues, or Linear). Adapt tool names.
+Use the Linear MCP (or the installed tracker MCP; adapt tool names).
 
-1. **Start with linked tickets.** If the seed commits or PRs reference ticket IDs (e.g., `ENG-1234`, `[BUG-567]`), fetch those first with `get_issue`. Read the full issue including comments.
+1. **Start with linked tickets.** If the seed commits or PRs reference ticket IDs (e.g., `ENG-1234`, `MOBILE-673`, `[BUG-567]`), fetch those first with `get_issue`. Read the full issue including comments.
 2. **List related issues by keyword.** Use `list_issues` with text search for the feature name, key symbol, or business term. Try multiple phrasings.
 3. **Walk the issue tree.** If you land on a sub-issue, fetch its parent. Sub-issues are tactical; parents often carry the "why."
 4. **Read project docs.** If the issue belongs to a project, use `get_project` and check attached docs. Project-level documents are where specs and rationale are most often captured.

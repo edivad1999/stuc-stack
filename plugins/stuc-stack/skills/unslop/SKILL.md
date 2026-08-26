@@ -5,24 +5,25 @@ description: Cut AI tells from any writing. Must always apply.
 
 # Unslop
 
-Edit text to remove AI patterns. Keep the author's bar: scope lock, name what actually ran, no padding.
+Edit text to remove AI patterns and add human voice.
 
 ## Process
 
 1. Scan for the patterns below.
 2. Rewrite. Preserve meaning, match intended tone.
-3. Apply the constraints in the next section.
+3. Add soul (see next section).
 4. Self-audit: "What makes this obviously AI generated?" Fix remaining tells.
 
-## Constraints (this stack)
+## Adding soul
 
-- **Name the command that ran.** Gradle tasks, `android` invocations, tests, pipeline jobs. If you did not run it, say so. Do not imply coverage. (P18)
-- **No coauthor theater.** Do not add `Co-authored-by`, `Signed-off-by`, or agent trailers. The user is the git author. (P27)
-- **No chatbot padding.** No "I hope this helps", "Great question", or "Found the smoking gun."
-- **Scope lock.** Smallest diff. Do not inflate the write-up with work that was not asked. (P30)
-- **Roast niche claims.** If a recommendation is too speculative or too specific to be useful, cut it. (P20)
-- **Have a judgment.** Do not list empty pros/cons. Say what you would do.
-- **Be specific.** Concrete files, module names, task names. Not vibes.
+Removing patterns is half the job. Sterile, voiceless writing is just as obvious.
+
+- **Have opinions.** React to facts instead of neutrally listing pros and cons.
+- **Vary rhythm.** Short sentences. Then longer ones that take their time. Mix it up.
+- **Acknowledge complexity.** "Impressive but also kind of unsettling" beats "impressive."
+- **Use "I" when it fits.** First person isn't unprofessional.
+- **Let some mess in.** Perfect structure looks machine-made.
+- **Be specific.** Not "this is concerning" but "there's something unsettling about agents churning away at 3am." Name the Gradle task, `android` command, or pipeline job that actually ran when the writing is a verification report.
 
 ## Patterns to detect and fix
 

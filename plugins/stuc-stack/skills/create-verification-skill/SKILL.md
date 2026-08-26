@@ -1,65 +1,48 @@
 ---
 name: create-verification-skill
-description: >-
-  Generate a project-local Android verification skill (verify-<app>) with a
-  feature map. Drive via Gradle assemble and the android CLI, not Node check.sh
-  or Playwright. Use for /create-verification-skill or when a repo has no
-  scripted way to prove UI behavior.
+description: "Generate a project-local verification skill that drives your app the way a user does — any language, framework, or platform. Use for /create-verification-skill, \"make a control skill for this repo\", or when a project has no scripted way to prove UI/CLI/service behavior."
 disable-model-invocation: true
 ---
 
 # Create a verification skill
 
-Every serious Android project needs a scripted way to drive the real app: assemble it, deploy with the `android` CLI, exercise a feature the way a user would, and capture evidence. This skill generates that as a **project-local** skill (`.cursor/skills/verify-<app>/`) in the **consuming repo**. You write it for the next agent, not for a human.
+Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`.cursor/skills/verify-<app>/`) tailored to the repo. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
 
-Do not clone product names from this plugin. Interview **this** checkout. Copy the last similar screen's verification path. Do not invent a second screenshot stack. Do not claim coverage you did not run. (P8, P15, P18)
+In this stack the default surface is an Android app: Gradle assemble, then the `android` CLI via **android-verify**. Do not generate a Node `check.sh` or a Playwright harness for that surface. The workflow below is the same as the generic generator; only the Drive/Observe answers change.
 
-Worked shape (fictional Notes app, not a product): [`references/verify-notes-example/`](references/verify-notes-example/). `SKILL.md` + `features/` index + one file per area + `multi-surface-journeys.md`. Driver scripts are omitted; commands live in the skill.
+Worked Android shape (fictional Notes app): [`references/verify-notes-example/`](references/verify-notes-example/).
 
 ## 1. Interview the repo, not the user
 
-Answer these from the codebase and only ask what you cannot observe:
+Answer these from the codebase and only ask the user what you cannot observe:
 
-- **Surface:** Android app is the default for this stack. Note other surfaces (library modules, CLI) but Drive the primary user-facing APK.
-- **Run:** how does the app assemble? Prefer the repo's documented Gradle task (`:app:assembleDebug` or the flavor the CI uses). Note applicationId, launcher activity, product flavors. Ask rather than guessing flavor policy. (android-opinions)
-- **Drive:** **must** call **android-verify** and the `android` binary (official `android-cli` skill). Not Playwright, not `control-ui`, not a vendored `check.sh`. Do not paste android-cli into the generated skill. Host unit tests stay Gradle (chrisbanes `gradle-run` if installed).
-- **Observe:** layout JSON, screen PNGs, preview PNGs, journey JSON, Gradle reports, logcat on crash.
-- **Isolate:** one emulator serial this run started. Refuse to double-drive a shared emulator or the user's physical device. (device lock)
+- **Surface:** what does a user actually touch? A mobile app, a web UI, a CLI/TUI, a desktop app, an API, a library? A repo can have several; pick the primary one and note the rest. Android APK is the default for this stack.
+- **Run:** how does the app start locally? Prefer the repo's own documented command (Gradle assemble task, package scripts, Makefile, README quickstart). Note applicationId, launcher activity, flavors, ports, env vars, seed data, auth.
+- **Drive:** how can an agent interact with it programmatically? Existing harnesses first. For an Android app: **android-verify** and the `android` binary (official `android-cli` skill). Do not paste android-cli into the generated skill. Host unit tests stay Gradle (chrisbanes `gradle-run` if installed). For a non-Android surface, existing Playwright/Cypress specs, expect scripts, PTY helpers, or curl-able endpoints, then a generic recipe.
+- **Observe:** what evidence can be captured? For Android: layout JSON, screen PNGs, preview PNGs, journey JSON, Gradle reports, logcat on crash. For other surfaces: screenshots, terminal transcripts, response bodies, logs, exit codes, DB state.
+- **Isolate:** can two instances run side by side (ports, data dirs, profiles, emulator serials)? If not, say so in the generated skill: refusing to double-drive a shared instance beats corrupting the user's session. Android: one emulator serial this run started.
 
-If the checkout does not assemble as-is, fix that first (or report it) before generating.
+If the checkout doesn't build or start as-is, fix that first (or report it precisely) before generating; a skill written against a broken base teaches wrong steps. When an irrelevant missing asset blocks startup (a static dir the API never serves, a sample config), the generated skill may create it, clearly marked as verification scaffolding, and remove it in cleanup.
 
 ## 2. Generate the skill
 
-Write `.cursor/skills/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<app>` and a description that names the app and when to reach for it) and these sections, grounded in the interview (no placeholders):
+Write `.cursor/skills/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<app>` and a `description` that names the app, the surface, and when to reach for it — without frontmatter the skill never registers) and these sections, each grounded in what the interview actually found (no placeholders left):
 
-- **Launch:** exact Gradle assemble, `android describe`, `android run --apks=`. How to tell it is ready. Teardown of emulators this run started.
-- **Doctor:** `which android`, `android -V`, `adb devices`, APK still on disk, assemble receipt. Read-only.
-- **Drive:** android-verify order: `layout` → input/`screen resolve` → `screen capture` (inspect PNG) → Studio preview if isolated composable → journeys if documented. Named screenshot/preview Gradle tasks are blocking when present. (P16)
-- **Evidence:** named artifact dir. Proof standards: real user path, not ViewModel setters; action + resulting state; side effects (DB, files) alongside pixels; mocks only behind a production boundary. Host tests ≠ device proof. (P18)
-- **Cleanup:** stop emulators this run started. Never kill by process name. Evidence survives.
-- **Helpers:** do **not** ship a Node `check.sh`. If a tiny wrapper is needed, it must call `android` / the Gradle wrapper and be documented. Prefer no wrapper.
-
-Copy structure from [`references/verify-notes-example/SKILL.md`](references/verify-notes-example/SKILL.md). Replace sample module names with this repo's.
+- **Launch:** the exact command that starts the app for verification, and how to tell it's ready (a log line, a port answering, a prompt, `android describe` after assemble). Include teardown. For Android: Gradle assemble, then `android run --apks=`. For a short-lived CLI or TUI there is no server to keep alive: launch means build the binary (or install deps) once, then start each drive in its own isolated PTY or tmux session.
+- **Doctor:** one read-only check that answers "is this instance worth driving?" — process up, right version/build, port owned by us, auth valid. Android: `which android`, `android -V`, `adb devices`, APK still on disk, assemble receipt. An agent runs this first whenever anything looks off.
+- **Drive:** the harness recipe with real selectors/commands from this repo, not examples. Prefer stable handles (content descriptions, test tags, ARIA labels, data attributes, prompt strings, route paths) over coordinates and tab order. Android order: `layout` → input/`screen resolve` → `screen capture` (inspect PNG) → Studio preview if isolated composable → journeys if documented. Named screenshot/preview Gradle tasks are blocking when present.
+- **Evidence:** what to capture for a proof and where it goes. State the proof standards: exercise the real user path, not internal setters or test-only endpoints; capture the action and the resulting state, not just the final screen; verify side effects (files written, rows inserted, messages sent) alongside what's visible; mocks only where a production boundary already isolates the external system. When the safe path is a dry-run or test mode, verify what it actually skips by observing (files, network, git refs) rather than trusting its name: some dry-runs still touch the network or open a browser. Host tests ≠ device proof.
+- **Cleanup:** how to tear down instances the run created. Never kill by process name; kill what you started. Cleanup removes instances and scratch state, never the evidence: proof artifacts survive the teardown, in a location the skill names.
+- **Helpers:** any script the skill ships is executable and its invocation is shown in the skill body. A helper the reader has to reverse-engineer is not a helper. Do not ship a Node `check.sh` for an Android app. If a tiny wrapper is needed, it must call `android` / the Gradle wrapper.
 
 ## 3. Seed the feature map
 
-Create `.cursor/skills/verify-<app>/features/README.md` plus one file per user-facing feature (start with the top 3–5 from navigation, screens, or docs). Follow [`references/verify-notes-example/features/`](references/verify-notes-example/features/).
-
-Each file: H1 + one paragraph, then exactly four H2s in order:
-
-1. `Sub-features`
-2. `How to get to it (user POV)`
-3. `Driving it with android-verify`
-4. `Gotchas`
-
-The README is the sweep order. Put `multi-surface-journeys.md` last. The map is the repo's maintained verification source; a proof that drives one convenient entry point is incomplete when the map lists others.
-
-Keep implementation details out. Name user paths, stable handles (content descriptions, test tags), required state, `android` / Gradle commands, and observable proof.
+Create `.cursor/skills/verify-<app>/features/README.md` plus one file per user-facing feature you can identify (aim for the top 3-5 to start, from routes, commands, menus, or docs). Follow the shape in [`references/verify-notes-example/features/`](references/verify-notes-example/features/), with a README index and one file per feature. Each file answers, from the user's point of view: what the feature is, how to reach it, how to drive it with the harness, and what observable end state proves it works. The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with <harness>`, and `Gotchas`. For Android the Drive H2 is `Driving it with android-verify`. The map is the repo's maintained verification source; a proof that drives one convenient entry point is incomplete when the map lists others.
 
 ## 4. Prove the generated skill before handing it over
 
-Run its own instructions end to end once: launch, doctor, drive **ONE** mapped feature, capture evidence, clean up. After cleanup, confirm evidence still exists. A generated skill that was never executed is a draft. If this host is not an Android app, or `android` cannot Drive a device, **say so** and do not claim device proof. Doctoring `android -V` is not a Drive. (P18)
+Run its own instructions end to end once: launch, doctor, drive ONE mapped feature (one is enough; the map exists so later runs can cover the rest), capture evidence, clean up. After cleanup, confirm the evidence still exists at the named location — a cleanup that eats the proof fails this step. Fix what fails, and run the generated cleanup after every failed iteration too, so broken attempts don't strand processes and ports. A generated skill that was never executed is a draft, not a deliverable. If this host cannot Drive a device, say so; doctoring `android -V` is not a Drive.
 
 ## 5. Offer the maintenance loop
 
-Point at `/maintain-verification-skill`. Suggest a cadence only if they ask.
+Point the user at `/maintain-verification-skill` for keeping the map honest as the app changes. Suggest a cadence only if they ask.

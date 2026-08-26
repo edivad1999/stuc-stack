@@ -1,6 +1,6 @@
 ---
 name: why
-description: "Use for 'why does X work this way', design rationale, regressions, or postmortems. Host-agnostic evidence: git plus gh or glab, Jira or GitHub Issues, live CI/pipeline jobs, Gradle task names. Use how for runtime behavior."
+description: "Use for 'why does X work this way', 'why we picked Y', design rationale, regressions, postmortems, or data-backed thresholds. Discovers available MCPs and queries each evidence category (source control, issue tracker, long-form docs, real-time chat, infrastructure observability, error tracking, product analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for runtime behavior."
 ---
 
 # Why
@@ -65,11 +65,9 @@ Before spawning investigators, anchor the investigation in concrete code. You ne
 - The relevant file path(s) and line range(s)
 - The key symbols (function names, class names, constants)
 - An initial commit list. The last few commits touching the target.
-- PR or MR numbers from merge commits (`(#1234)` or `!123` depending on host)
+- PR numbers from merge commits (pattern `(#1234)` in the subject line)
 
 Build this inline. It's cheap, and every investigator needs it.
-
-Detect the git host from remotes. Use `gh` for GitHub PRs, `glab` for GitLab MRs. Do not assume GitHub. Prefer Gradle task names, MR/PR numbers, and live pipeline jobs over folklore. (P19)
 
 ```bash
 # Blame target lines for last-touch commits
@@ -78,27 +76,20 @@ git blame -L <start>,<end> <file>
 # Full file history, with patches, through renames
 git log --follow -p -- <file>
 
-# Last N commits touching the file
+# Last N commits touching the file, PR numbers visible
 git log --oneline -20 -- <file>
 
-# Extract PR/MR numbers from a commit message
+# Extract PR numbers from a commit message
 git log -1 --format=%B <commit>
 ```
 
-GitHub:
+Pull PR bodies and discussion via `gh` for any substantive commits (GitHub remotes). For GitLab remotes, use `glab mr view` the same way. Detect the host from `git remote`.
 
 ```bash
 gh pr view <number> --json title,body,author,createdAt,mergedAt,labels,closingIssuesReferences,comments,reviews
 ```
 
-GitLab:
-
-```bash
-glab mr view <number>
-glab ci list
-```
-
-Capture this as seed context (file paths, symbols, commits, PR/MR numbers, ticket IDs, named Gradle tasks). Pass it to the investigators so they don't rediscover it.
+Capture this as seed context (file paths, symbols, commits, PR numbers, linked ticket IDs). Pass it to the investigators so they don't rediscover it.
 
 ## Step 3. Spawn Parallel Investigators (default posture)
 
@@ -118,7 +109,7 @@ Map each available MCP to one evidence category:
 6. Error / exception tracking
 7. Product analytics warehouse
 
-Source control is always available through git plus `gh` or `glab` (whichever the remotes match). For the other six, classify using the MCP name, server instructions, tool names, and resource descriptors. Ticket trackers are Jira or GitHub Issues first when those MCPs exist; Linear only if that is what is installed. If an MCP could fit more than one category, choose the one matching its primary evidence. Record ambiguous cases in the coverage map.
+Source control is always available through git and `gh` (or `glab` when the remote is GitLab). For the other six, classify using the MCP name, server instructions, tool names, and resource descriptors. If an MCP could fit more than one category, choose the one matching its primary evidence. Record ambiguous cases in the coverage map.
 
 Aim for a complete **coverage map**, not a minimal one. A null result from an issue tracker is evidence the decision was not ticketed, a useful fact in itself. Document the null, don't skip the search.
 
@@ -142,9 +133,9 @@ Spawn one investigator per category that has a matching MCP. Each owns exactly o
 
 Each entry lists what the category physically contains and the kind of "why" it uniquely surfaces. Use it to know what to expect back, how to name a gap when a category returns empty, and (only in the rare provably-irrelevant case) to justify a skip. Every category overlaps, but each owns a kind of evidence the others cannot recover.
 
-1. **Source control investigator**. Git history, `gh` or `glab` for PRs/MRs, code comments, tests, live pipeline YAML. Always spawn; the only guaranteed source. Best at surfacing *implementation-time rationale captured during review*. MR/PR descriptions stating the problem, review threads debating alternatives, inline comments encoding non-obvious constraints, test names that encode motivating edge cases, commit messages linking tickets, and named Gradle tasks. Most trustworthy because it ties directly to the diff that shipped.
+1. **Source control investigator**. Git history, `gh` (or `glab`) for PRs/MRs, code comments, tests. Always spawn; the only guaranteed source. Best at surfacing *implementation-time rationale captured during review*. PR descriptions stating the problem, review threads debating alternatives, inline comments encoding non-obvious constraints, test names that encode motivating edge cases, and commit messages linking tickets or incidents. Most trustworthy because it ties directly to the diff that shipped.
 
-2. **Issue / ticket tracker investigator** (e.g. Jira, GitHub Issues, Linear, Plane, Shortcut MCP). Tickets, project docs, status updates, spec attachments. Best at surfacing *the product or business forcing function*. Customer requests, parent-initiative framing, ticket-level scope changes. Prefer Jira/GitHub Issues when those are the remotes/MCPs. Do not default to Linear.
+2. **Issue / ticket tracker investigator** (e.g. Linear, Jira, GitHub Issues, Plane, Shortcut MCP). Tickets, project docs, status updates, spec attachments. Best at surfacing *the product or business forcing function*. Customer requests ("Acme needs X for their SOC2 audit"), compliance deadlines, parent-initiative framing ("Q3 enterprise readiness"), ticket-level scope changes, and labels that categorize the motivation (`customer:*`, `incident-followup`, `compliance`, `perf-regression`). Strongest when the why is external to engineering.
 
 3. **Long-form documents investigator** (e.g. Notion, Confluence, Google Docs, Coda MCP). PRDs, specs, RFCs, design docs, ADRs, postmortems, team pages, meeting notes. Best at surfacing *long-form design rationale*. Problem statements, explicit "alternatives considered" and "rejected approaches" sections, strategy documents that set priorities, ADRs with finalized decisions, and postmortem action items that tie directly to code. Where the why is written out before it becomes code.
 
@@ -208,14 +199,14 @@ The final output uses this structure. Adapt as needed, but keep the confidence s
 
 Format each line as: `- <Source>: <what was searched>. <what was found, or "no relevant results," or "skipped. reason">.`
 
-Example (Android / Gradle host; swap `glab` for `gh` if the remote is GitHub):
-- Source control (git/glab): `git log --follow app/src/main/java/.../SaveViewModel.kt`, MR !812. Found !812 migrated LiveData to StateFlow and linked MOBILE-673.
-- Issue tracker (Jira): searched MOBILE-673 and "StateFlow". Found the view-to-compose subtask; no debate of the Flow wrapper type.
-- Long-form docs (repo `docs/plans/`): read the written migration plan. Copy-the-last-screen is required; new architecture per screen is rejected.
-- Real-time team chat: skipped. No matching MCP available. Gap: conversational record not searched.
-- CI (live pipeline YAML / `glab ci`): `assembleDebug` and the named screenshot Gradle task are execution jobs; reporting-aggregation tasks are not runners. (P19)
-- Error / exception tracking: searched crash clusters around the MR date for `SaveViewModel`. No relevant results.
-- Product analytics warehouse: skipped. No matching MCP. Gap: no warehouse evidence for this UI change.
+Example:
+- Source control (git/gh): `git log --follow app/src/main/java/.../SaveViewModel.kt`, PRs #812, #740. Found PR #812 introduced StateFlow save and linked MOBILE-673.
+- Issue tracker (Jira): searched for "save" and MOBILE-673. Found MOBILE-673 parent issue but no discussion of the Flow wrapper type.
+- Long-form docs (Confluence): searched for "save pipeline," "StateFlow," "MOBILE-673." No relevant results.
+- Real-time team chat (Slack): skipped. No matching MCP available in this environment. Gap: conversational record not searched.
+- Infrastructure observability (Datadog): searched for crash-free session metrics around 2024-08-14. Found monitor "ANR rate > 1%" created same day as PR #812.
+- Error / exception tracking (Sentry): searched for issues first-seen in Aug 2024 with stack through `SaveViewModel`. Found issue ANDROID-3821 spiking in the week before the PR.
+- Product analytics warehouse: queried save-success events for the 30-day window around 2024-08-14. Daily failed-save count fell from ~1.2k/day pre-PR to <50/day post-PR. Also checked named Gradle tasks in live CI YAML. `assembleDebug` is an execution job; reporting-aggregation tasks are not runners.
 
 After the Sources Consulted block, if the user's `why` question is a precursor to actually changing this code, convert the lineage findings into a Preserve / Change / Avoid / Risk constraint set suitable for planning the change.
 

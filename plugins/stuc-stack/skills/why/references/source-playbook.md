@@ -4,8 +4,8 @@ The why skill spawns one investigator per available evidence category, each read
 
 | Category | Playbook | Example MCP it documents |
 |---|---|---|
-| Source control history | [`code-archaeology.md`](./sources/code-archaeology.md) | git, `gh` or `glab` |
-| Issue / ticket tracker | [`linear.md`](./sources/linear.md) | Adapt for **Jira or GitHub Issues** first; Linear only if that MCP is what is installed |
+| Source control history | [`code-archaeology.md`](./sources/code-archaeology.md) | git, `gh` (or `glab`) |
+| Issue / ticket tracker | [`linear.md`](./sources/linear.md) | Linear (adapt for Jira, GitHub Issues, Plane, Shortcut) |
 | Long-form documents | [`notion.md`](./sources/notion.md) | Notion (adapt for Confluence, Google Docs, Coda) |
 | Real-time team chat | [`slack.md`](./sources/slack.md) | Slack (adapt for Discord, Microsoft Teams, Mattermost) |
 | Infrastructure observability | [`datadog.md`](./sources/datadog.md) | Datadog (adapt for New Relic, Honeycomb, Grafana, Splunk) |
