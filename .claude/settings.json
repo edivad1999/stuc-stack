@@ -1,11 +1,6 @@
 {
+  "enabledPlugins": {},
   "extraKnownMarketplaces": {
-    "stuc-stack": {
-      "source": {
-        "source": "directory",
-        "path": "."
-      }
-    },
     "chrisbanes-skills": {
       "source": {
         "source": "github",
@@ -18,8 +13,5 @@
         "repo": "android/skills"
       }
     }
-  },
-  "enabledPlugins": {
-    "stuc-stack@stuc-stack": true
   }
 }

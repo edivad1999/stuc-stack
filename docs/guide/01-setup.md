@@ -55,13 +55,13 @@ Cursor has no `dependencies` field in `plugin.json`.
 /setup-stuc
 ```
 
-[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc` and checks that the installed chrisbanes router `using-chrisbanes-skills` (not this plugin's `stuc-chrisbanes` glue), `compose-state-and-effects`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve (`which android` / `android -V`). That doctor is not a device proof.
+[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc`, associates `docs/verify-*` (`stuc-stack: true` only) with this harness, and checks that the installed chrisbanes router `using-chrisbanes-skills` (not this plugin's `stuc-chrisbanes` glue), `compose-state-and-effects`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve (`which android` / `android -V`). That doctor is not a device proof.
 
 You only override what you care about. `inherit-parent` or `auto` means the subagent inherits the parent chat model.
 
 ## Accept the verification offer, or don't
 
-If the project has no `verify-*` skill, setup offers [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) once. For Android apps, generated Drive calls **android-verify** (Gradle assemble, then the `android` CLI). It does not copy the android-cli skill into the repo.
+If the project has no `docs/verify-*` skill, setup offers [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) once. For Android apps, generated Drive calls **android-verify** (Gradle assemble, then the `android` CLI). It does not copy the android-cli skill into the repo. `/setup-stuc` also wires harness delegates for existing `stuc-stack: true` skills under `docs/` so Claude Code or Codex can `/verify-<app>` without copying chrisbanes into the project.
 
 After setup, start a new chat. The model rule applies to new sessions.
 

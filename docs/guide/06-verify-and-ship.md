@@ -33,7 +33,7 @@ The UI bullet above hides a real requirement. The agent needs a scripted way to 
 
 [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) interviews the repository, not you. For an Android app, Drive must call **android-verify** and the `android` binary, not Playwright. It does not paste the official android-cli skill into the generated project skill.
 
-It writes `.cursor/skills/verify-<app>/` in the **consuming Android repo**, with Launch, Doctor, Drive, Evidence, and Cleanup, plus a `features/` map (README sweep order, one file per area, `multi-surface-journeys.md` last). The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with android-verify`, and `Gotchas`. Worked sample (fictional Notes app): [`verify-notes-example`](../../skills/create-verification-skill/references/verify-notes-example/). Drive is Gradle + the `android` CLI, not Playwright or `check.sh`. Before handing it over, the generator proves the skill once end to end when a device can be driven. If that proof cannot run, say so; do not claim it. (P18)
+It writes `docs/verify-<app>/` in the **consuming Android repo** (SKILL.md with Launch, Doctor, Drive, Evidence, and Cleanup, plus a `features/` map: README sweep order, one file per area, `multi-surface-journeys.md` last). The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with android-verify`, and `Gotchas`. The current harness only gets a thin delegate under `.cursor/skills`, `.claude/skills`, or `.codex/skills` so `/verify-<app>` registers; `/setup-stuc` associates those delegates for `stuc-stack: true` skills only. Worked sample (fictional Notes app): [`verify-notes-example`](../../skills/create-verification-skill/references/verify-notes-example/). Drive is Gradle + the `android` CLI, not Playwright or `check.sh`. Before handing it over, the generator proves the skill once end to end when a device can be driven. If that proof cannot run, say so; do not claim it. (P18)
 
 From then on, "verify it in the app" is a step any agent can execute, in this repo, with no setup conversation.
 
@@ -47,7 +47,7 @@ Apps change and feature maps rot. When yours drifts, run:
 /maintain-verification-skill
 ```
 
-[`/maintain-verification-skill`](../../skills/maintain-verification-skill/SKILL.md) audits the generated skill: one read-only source reader per feature in parallel, then one live pass that drives every mapped feature. It ends in exactly one of three outcomes. `clean` means full coverage and nothing to ship. `changed` means one PR of proven corrections, confined to the verification skill's own directory. `blocked` names the blocker. It never edits product code. If the live pass catches a product regression, it reports the regression instead of papering over it in docs.
+[`/maintain-verification-skill`](../../skills/maintain-verification-skill/SKILL.md) audits the generated skill: one read-only source reader per feature in parallel, then one live pass that drives every mapped feature. It ends in exactly one of three outcomes. `clean` means full coverage and nothing to ship. `changed` means one PR of proven corrections, confined to `docs/verify-*/`. `blocked` names the blocker. It never edits product code. If the live pass catches a product regression, it reports the regression instead of papering over it in docs.
 
 ## Open the PR
 

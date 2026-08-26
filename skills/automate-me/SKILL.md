@@ -14,7 +14,7 @@ This skill orchestrates three others: an inline mining pass (see step 1), Cursor
 
 ### 0. Check for an existing skill
 
-Look recursively for `.cursor/skills/**/*-mode/SKILL.md` and `~/.cursor/skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`.cursor/skills/<handle>/`), not only at the top level. If one exists, confirm intent with `AskQuestion` (unless they already said "update my skill" or similar):
+Look recursively for project-local mode skills in this order: `docs/**/*-mode/SKILL.md`, then harness delegates `.cursor/skills/**/*-mode/SKILL.md`, `.claude/skills/**/*-mode/SKILL.md`, `.codex/skills/**/*-mode/SKILL.md`, then user-level `~/.cursor/skills/*-mode/SKILL.md` / `~/.claude/skills/*-mode/SKILL.md` matching the user's handle. If one exists, confirm intent with `AskQuestion` (unless they already said "update my skill" or similar):
 
 - Update the existing skill (default for repeat runs)
 - Start fresh (rare; ask why before doing it)
@@ -22,7 +22,7 @@ Look recursively for `.cursor/skills/**/*-mode/SKILL.md` and `~/.cursor/skills/*
 Update mode changes the rest of the flow:
 - Step 1 mines only history since the skill was last edited (`git log -1 --format=%cI <path>`).
 - Step 2 asks what's changed or missing, not what to capture from zero.
-- Step 4 edits the existing file in place. Preserve sections the user hasn't contradicted; revise ones with new evidence; add new sections only for genuinely new rules.
+- Step 4 edits the **canonical** file in place (`docs/…-mode/SKILL.md`, or the user-global path if that is what exists). Refresh the harness delegate if `name`/`description` changed. Preserve sections the user hasn't contradicted; revise ones with new evidence; add new sections only for genuinely new rules.
 
 ### 1. Mine their history
 
@@ -66,7 +66,7 @@ The **stuc-mode** skill shows the shape. Read it for granularity. Don't copy its
 
 Use Cursor's built-in `create-skill` skill to author the skill. Placement:
 
-- Path: preserve an existing mode skill's category. For a new mode, use `.cursor/skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle; otherwise default to `.cursor/skills/<handle>-mode/SKILL.md` in the project (or `~/.cursor/skills/<handle>-mode/` if the user prefers a personal skill).
+- Path: **project-local** skills are harness-agnostic. Canonical file: `docs/<handle>-mode/SKILL.md` (or `docs/<handle>/<handle>-mode/SKILL.md` if that category already exists). Then write a thin harness delegate (same shape as [`create-verification-skill/references/harness-delegates.md`](../create-verification-skill/references/harness-delegates.md)) for the current harness only: `.cursor/skills/`, `.claude/skills/`, or `.codex/skills/`. Do not write into `.agents/skills/`. Do **not** set `stuc-stack: true` on personal mode skills — `/setup-stuc` must not treat them as stack skills. If the user prefers a **user-global** skill, use that harness's home dir (`~/.cursor/skills/<handle>-mode/`, `~/.claude/skills/`, …), not the repo.
 - Handle: the user's first name or chosen identifier.
 - Frontmatter `description`: trigger on their name + `/<handle>-mode` + "work in their style", not on generic keywords like "write code" or "review PR".
 - Frontmatter formatting: follow `create-skill`'s YAML rules. Keep `description` as one YAML scalar; quote it or use `description: >-` with indented continuation lines when punctuation or wrapping requires it.

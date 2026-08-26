@@ -6,7 +6,9 @@ disable-model-invocation: true
 
 # Create a verification skill
 
-Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`.cursor/skills/verify-<app>/`) tailored to the repo. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
+Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a **harness-agnostic** project skill under `docs/verify-<app>/` (SKILL.md + feature map together). Harness folders (`.cursor/skills`, `.claude/skills`, `.codex/skills`) only get a thin delegate so `/verify-<app>` registers. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
+
+Delegate rules: [`references/harness-delegates.md`](references/harness-delegates.md).
 
 In this stack the default surface is an Android app: Gradle assemble, then the `android` CLI via **android-verify**. Do not generate a Node `check.sh` or a Playwright harness for that surface. The workflow below is the same as the generic generator; only the Drive/Observe answers change.
 
@@ -26,7 +28,14 @@ If the checkout doesn't build or start as-is, fix that first (or report it preci
 
 ## 2. Generate the skill
 
-Write `.cursor/skills/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<app>` and a `description` that names the app, the surface, and when to reach for it — without frontmatter the skill never registers) and these sections, each grounded in what the interview actually found (no placeholders left):
+Write `docs/verify-<app>/SKILL.md` with YAML frontmatter:
+
+- `name: verify-<app>`
+- `description` that names the app, the surface, and when to reach for it — without frontmatter the skill never registers
+- `stuc-stack: true` (required; `/setup-stuc` only associates skills with this marker)
+- `disable-model-invocation: true` unless the user asked otherwise
+
+Then these sections, each grounded in what the interview actually found (no placeholders left):
 
 - **Launch:** the exact command that starts the app for verification, and how to tell it's ready (a log line, a port answering, a prompt, `android describe` after assemble). Include teardown. For Android: Gradle assemble, then `android run --apks=`. For a short-lived CLI or TUI there is no server to keep alive: launch means build the binary (or install deps) once, then start each drive in its own isolated PTY or tmux session.
 - **Doctor:** one read-only check that answers "is this instance worth driving?" — process up, right version/build, port owned by us, auth valid. Android: `which android`, `android -V`, `adb devices`, APK still on disk, assemble receipt. An agent runs this first whenever anything looks off.
@@ -37,7 +46,13 @@ Write `.cursor/skills/verify-<app>/SKILL.md` with YAML frontmatter (`name: verif
 
 ## 3. Seed the feature map
 
-Create `.cursor/skills/verify-<app>/features/README.md` plus one file per user-facing feature you can identify (aim for the top 3-5 to start, from routes, commands, menus, or docs). Follow the shape in [`references/verify-notes-example/features/`](references/verify-notes-example/features/), with a README index and one file per feature. Each file answers, from the user's point of view: what the feature is, how to reach it, how to drive it with the harness, and what observable end state proves it works. The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with <harness>`, and `Gotchas`. For Android the Drive H2 is `Driving it with android-verify`. The map is the repo's maintained verification source; a proof that drives one convenient entry point is incomplete when the map lists others.
+Create `docs/verify-<app>/features/README.md` plus one file per user-facing feature you can identify (aim for the top 3-5 to start, from routes, commands, menus, or docs). Follow the shape in [`references/verify-notes-example/features/`](references/verify-notes-example/features/), with a README index and one file per feature. Each file answers, from the user's point of view: what the feature is, how to reach it, how to drive it with the harness, and what observable end state proves it works. The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with <harness>`, and `Gotchas`. For Android the Drive H2 is `Driving it with android-verify`. The map is the repo's maintained verification source; a proof that drives one convenient entry point is incomplete when the map lists others.
+
+## 3b. Harness delegate
+
+Write a thin delegate SKILL.md for the **current** harness only (and any other harness skill dirs that already exist in this repo). Do not invent `.claude/` or `.codex/` trees on a Cursor-only project. Do not write into `.agents/skills/` (upstream install location).
+
+If `.cursor/skills/verify-<app>/` already holds a full skill, migrate it to `docs/verify-<app>/` first ([`references/harness-delegates.md`](references/harness-delegates.md)).
 
 ## 4. Prove the generated skill before handing it over
 

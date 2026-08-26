@@ -102,13 +102,13 @@ codex plugin add stuc-stack@stuc-stack
 /setup-stuc
 ```
 
-It writes the model rule and **doctors** upstreams: `which android` / `android -V`, official `android-cli` skill, installed chrisbanes router `using-chrisbanes-skills`, chrisbanes `compose-state-and-effects`, android/skills `edge-to-edge`. If any of those are missing, the stack is not ready. Doctoring the binary is not a device proof.
+It writes the model rule, **doctors** upstreams, and **associates** `docs/verify-*` skills (`stuc-stack: true` only) with this harness via a thin delegate. Doctoring the binary is not a device proof.
 
 ## Credit
 
 Tailored from the [pstack](https://github.com/cursor/plugins/tree/main/pstack) engineering stack (MIT, Lauren Tan). Copyright retained in `LICENSE`. Version here is `0.1.0`; it does not impersonate pstack `0.14.3`.
 
-Project-local verification skill + feature-map **shape** follows [poteto/verification-skill-example](https://github.com/poteto/verification-skill-example) (fictional Atlas map). In this plugin that shape is Android: Gradle assemble, the `android` CLI, **android-verify**, no Node `check.sh`. Sample: `skills/create-verification-skill/references/verify-notes-example/`.
+Project-local verification skill + feature-map **shape** follows [poteto/verification-skill-example](https://github.com/poteto/verification-skill-example) (fictional Atlas map). In this plugin that shape is Android: Gradle assemble, the `android` CLI, **android-verify**, no Node `check.sh`. Canonical files live in `docs/verify-<app>/`; Cursor/Claude/Codex only get a thin delegate. Sample: `skills/create-verification-skill/references/verify-notes-example/`.
 
 ## Use
 
@@ -125,7 +125,7 @@ Catalog, roles, and generic engineering behavior match pstack. Examples and Andr
 - **Android/Kotlin surface.** Playbooks that said “matching surface” / Playwright / `control-ui` default to `android-verify` + the official `android-cli` skill when the repo is an Android app. Gradle still builds; `android run` only deploys prebuilt APKs.
 - **Same generic engineering machine, Android examples.** `how`, `why`, `unslop`, `architect`, `tdd`, `arena`, `eval`, playbooks, `create-verification-skill` / `maintain-verification-skill` keep pstack structure, triggers, and rules. TypeScript / Linear / `retry.ts` illustrations are Gradle / Compose / `android` CLI / Jira-or-GitHub. `architect` still runs on function-boundary crossing (arena, `not implemented` bodies, design-it-twice). Copy-the-last-screen / smallest-diff may skip with `architect skipped: …` — a thin exception, not a rewrite of architect.
 - **TypeScript pack dropped.** There is no `typescript-best-practices/`. Kotlin type/API discipline is `kotlin-best-practices` plus chrisbanes Kotlin clusters by **name**.
-- **Android glue (this plugin only).** `android-verify` (Drive loop), `kotlin-best-practices` (replacement for typescript-best-practices), `stuc-chrisbanes` (not named `using-chrisbanes-skills`), `using-android-skills`. Project-local `verify-<app>` skills are generated into the consuming repo with an Android feature map. `gradle-run` and `kotlin-control-flow` are **not** shipped here; they are chrisbanes skills on HEAD.
+- **Android glue (this plugin only).** `android-verify` (Drive loop), `kotlin-best-practices` (replacement for typescript-best-practices), `stuc-chrisbanes` (not named `using-chrisbanes-skills`), `using-android-skills`. Project-local `verify-<app>` skills are generated into `docs/verify-<app>/` in the consuming repo (skill + feature map); harnesses get thin delegates. `gradle-run` and `kotlin-control-flow` are **not** shipped here; they are chrisbanes skills on HEAD.
 - **Upstreams referenced, not vendored.** `stuc-chrisbanes` (install / fail closed / when) plus the installed chrisbanes router `using-chrisbanes-skills`, and `using-android-skills`, route to current **names** and fail closed. Manifest `skills:` / `agents:` paths stay inside this directory. Official `android-cli` is named, never pasted.
 - **Verification contract.** Do not claim device/screenshot coverage that was not run. Name Gradle tasks, `android` commands, and devices. One device serial per run (`principle-separate-before-serializing-shared-state`).
 - **Multi-agent packaging.** pstack ships Cursor (`.cursor-plugin/`) only. This directory also has `.claude-plugin/` (with `dependencies`) and `.codex-plugin/` pointing at the same `skills/` tree.
@@ -139,5 +139,5 @@ Catalog, roles, and generic engineering behavior match pstack. Examples and Andr
 - **Cursor vs Claude deps.** Cursor cannot declare plugin dependencies and this plugin is not on the Cursor Marketplace. Enablement is Customize / `.cursor/settings.json` plus skill-name fail-closed. Load with `/add-plugin https://github.com/edivad1999/stuc-stack` or `~/.cursor/plugins/local`. Claude Code depends on `chrisbanes-skills@chrisbanes-skills` and `android-skills@android-skills` (upstream marketplaces, not this one). Codex has no plugin deps; add `edivad1999/stuc-stack` then `codex plugin add stuc-stack@stuc-stack`.
 - **Guide filename.** `docs/guide/02-stuc-mode.md` (not `02-poteto-mode.md`).
 - **No pstack guide art.** Copied `docs/guide/images/*.jpg` were deleted; markdown image embeds were removed.
-- **Playbook git paths.** Trunk re-reads use `skills/...` at repo root, not a `pstack/` prefix.
+- **Harness-agnostic verify skills.** Generated `verify-<app>` lives in `docs/verify-<app>/` (skill + `features/` map). `.cursor/skills`, `.claude/skills`, and `.codex/skills` only get a thin delegate. `/setup-stuc` associates `stuc-stack: true` skills with the current harness and does not copy chrisbanes or android/skills into the project.
 - **Not in this plugin:** chrisbanes workflow extras (`to-plan`, `shepherd`, `implement-with-subagents`, `run-github-project`, `grounded-writing`) stay upstream. Install via `npx skills add chrisbanes/skills`. Local `~/.agents/skills/` (or this repo’s gitignored `.agents/skills/`) is the install location, not a vendor tree.

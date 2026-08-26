@@ -5,6 +5,7 @@ description: >-
   assemble plus the android CLI. Use for layout JSON, screen PNGs, save/search
   flows, or claiming visual coverage. Sample only; generate verify-<app> in the
   consuming repo.
+stuc-stack: true
 disable-model-invocation: true
 ---
 
@@ -12,7 +13,7 @@ disable-model-invocation: true
 
 Drive a running Notes debug APK the way a user would. Gradle **builds**. The `android` binary **deploys and drives**. Load **android-verify** and the official **android-cli** skill. Do not paste those bodies. Do not invent a `check.sh`.
 
-This file is a **sample** of what `/create-verification-skill` should emit for an Android app. In a real repo the name is `verify-<app>` and the Gradle module/task names come from that repo.
+This file is a **sample** of what `/create-verification-skill` should emit for an Android app. In a real repo the canonical path is `docs/verify-<app>/SKILL.md` and the Gradle module/task names come from that repo.
 
 ## Fail closed
 

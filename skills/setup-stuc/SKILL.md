@@ -1,9 +1,10 @@
 ---
 name: setup-stuc
 description: >-
-  Configure stuc-stack models per role and doctor upstream installs (chrisbanes,
-  android/skills, android CLI). Use for /setup-stuc, "configure stuc-stack
-  models", or checking whether the stack is ready.
+  Configure stuc-stack models per role, doctor upstream installs (chrisbanes,
+  android/skills, android CLI), and associate project-local stuc-stack verify
+  skills with this harness. Use for /setup-stuc, "configure stuc-stack models",
+  or checking whether the stack is ready.
 ---
 
 # Setup stuc-stack
@@ -11,6 +12,8 @@ description: >-
 Write `~/.cursor/rules/stuc-stack-models.mdc`, an always-applied rule that sets models per role. Skills read it and fall back to inline defaults when a line is absent.
 
 This skill also **doctors upstreams**. Cursor `plugin.json` has no `dependencies` field. chrisbanes and android/skills are not in this plugin tree. If they or `android` are missing, print install commands and **do not claim the stack is ready**. (P29)
+
+Harness association for project-local **stuc-stack** skills (verify skills under `docs/verify-*/`) is [`create-verification-skill/references/harness-delegates.md`](../create-verification-skill/references/harness-delegates.md). Associate those only. Never copy chrisbanes, android/skills, or `android-cli` into `.cursor/skills`, `.claude/skills`, or `.codex/skills`.
 
 ## Steps
 
@@ -104,10 +107,21 @@ interrogate reviewers: claude-fable-5-thinking-max, gpt-5.6-sol-max, grok-4.6-fa
 
 Use only slugs confirmed in step 1. If a default slug is not in the detected set, ask before writing it.
 
-### 6. Confirm
+### 6. Associate stuc-stack project skills with this harness
 
-Tell the user the rule was written, whether upstreams are ready, and that the model rule applies to new sessions.
+Project-local stuc-stack skills live in `docs/` (canonical) plus a thin harness delegate. Do this every `/setup-stuc` run so a repo opened in a new agent still gets `/verify-<app>`.
 
-### 7. Offer a verification skill (optional)
+1. Detect the current harness: Cursor → `.cursor/skills/`; Claude Code → `.claude/skills/`; Codex → `.codex/skills/`. If unsure, ask. Do **not** use `.agents/skills/` (upstream install cache).
+2. Find canonical skills: `docs/verify-*/SKILL.md` whose frontmatter has `stuc-stack: true`. Ignore every other SKILL.md (chrisbanes, android/skills, personal `*-mode`, plugin skills).
+3. For each, if the current-harness delegate is missing or is still a full copy of the skill, write or replace it with the thin pointer in `harness-delegates.md`. Keep `name` / `description` in sync with docs.
+4. If a **full** `verify-*` skill still lives only under `.cursor/skills/` (or `.claude` / `.codex`) and `docs/verify-*` is missing, migrate it to `docs/` first, then write the delegate.
+5. If other harness skill dirs already exist in this repo, refresh those delegates too. Do not create `.claude/` or `.codex/` from scratch unless this session is that harness.
+6. Report what was associated. Do not claim chrisbanes skills were "installed" into the project.
 
-If the project has no `verify-*` skill, offer once to generate one with `/create-verification-skill`. Android apps should Drive through **android-verify** and a `features/` map. Sample shape: `create-verification-skill/references/verify-notes-example/`.
+### 7. Confirm
+
+Tell the user the rule was written, whether upstreams are ready, which stuc-stack project skills were associated with this harness, and that the model rule applies to new sessions.
+
+### 8. Offer a verification skill (optional)
+
+If the project has no `docs/verify-*` skill, offer once to generate one with `/create-verification-skill`. Android apps should Drive through **android-verify** and a `features/` map. Sample shape: `create-verification-skill/references/verify-notes-example/`.
