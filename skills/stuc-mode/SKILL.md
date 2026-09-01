@@ -30,9 +30,9 @@ Remaining triggers:
 - Nontrivial multi-step → write the throughput checkpoint (Feature step 3).
 - Any prose surface → the **unslop** skill. Your reply is a prose surface; write it per **Writing the reply**. Agent-facing prose also follows the **create-skill** skill (Cursor's built-in for authoring SKILL.md files).
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`/technical-writing`).
-- Before commit → the `deslop` skill from the `cursor-team-kit` plugin (`/deslop`).
+- Before commit → the **unslop** skill on the diff (code slop and commit prose). Do not call `/deslop` or `cursor-team-kit`.
 - Before review → the **no-comments** skill (`/no-comments`).
-- Shipping Android UI / device behavior → the **android-verify** skill (Gradle assemble, then the `android` binary). Load the official `android-cli` skill; do not vendor it. Non-Android UI/CLI still uses `cursor-team-kit` `control-ui` / `control-cli` if that plugin is installed. For bug fixes, reproduce first on the same surface yourself; hand to the user only under the narrow Bug fix step 1 exception. (P18)
+- Shipping Android UI / device behavior → the **android-verify** skill (Gradle assemble, then the `android` binary). Load the official `android-cli` skill; do not vendor it. Then follow `docs/verify-<app>/` when it exists. Non-Android surfaces: drive the real artifact yourself (repo tests, the real CLI, a real HTTP call). Do not call `control-ui` or `control-cli`. For bug fixes, reproduce first on the same surface yourself; hand to the user only under the narrow Bug fix step 1 exception. (P18)
 - Kotlin/Compose **design** (state, effects, slots, Flow, coroutines, API/types, KMP expect/actual) → **stuc-chrisbanes** (install / fail closed), then the installed chrisbanes router **using-chrisbanes-skills**, then the named **cluster** (`compose-state-and-effects`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, …). Stop if those names do not resolve.
 - Google product/migration workflows (AGP, Nav3, edge-to-edge, R8, Play, CameraX, …) → **using-android-skills**.
 - Editing `.kt` types, JSON stacks, ViewModel flags, or KMP module boundaries → **kotlin-best-practices** plus `references/android-opinions.md` in this skill directory.

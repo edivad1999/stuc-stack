@@ -10,9 +10,9 @@
 6. Run `node skills/stuc-mode/scripts/check-plan.mjs <plan.md>` and fix every line it prints (the **encode-lessons-in-structure** principle skill). It enforces the skeleton's shape, the verification rule in every verification block, and the punctuation rules.
 7. Hand back. Post the plan path and the script's output, then stop. Execution starts on the operator's explicit go, under the execution playbook the plan names.
 
-**Verification.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked (the **prove-it-works** principle skill). That sentence is the verification rule. Every verification block opens with it. The live block is mandatory. Ten lanes on `grok-4.6-fast-xhigh` at the PR head drive the real surface through its control skill, per the **swarm** skill. Each lane is one box with a concrete scenario, the screenshot it saves, and its pass predicate. The perf block names the metric, the probe, the trunk baseline measured first, and the rule with the number that fails. A PR that changes an interaction is review-gated. The operator reviews it in chat with screenshots and a video before merge. A PR that changes no interaction writes `**Review gate.** None. <PR id> is not review-gated.` and no boxes under it.
+**Verification.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked (the **prove-it-works** principle skill). That sentence is the verification rule. Every verification block opens with it. The live block is mandatory. Ten lanes on `grok-4.6-fast-xhigh` at the PR head drive the real surface through **android-verify** (then `docs/verify-<app>/` when it exists), per the **swarm** skill. Each lane is one box with a concrete scenario, the screenshot it saves, and its pass predicate. The perf block names the metric, the probe, the trunk baseline measured first, and the rule with the number that fails. A PR that changes an interaction is review-gated. The operator reviews it in chat with screenshots and a video before merge. A PR that changes no interaction writes `**Review gate.** None. <PR id> is not review-gated.` and no boxes under it.
 
-**Control skill.** Pick it by surface. Android apps use **android-verify**. Browser, Electron, and web UIs use `control-ui` from `cursor-team-kit` if installed. CLIs and TUIs use `control-cli`. A PR that touches two surfaces gets lanes on both. A surface with no control skill is a risk in Appendix C, and its live block still names how each lane drives it.
+**Drive skill.** Android apps use **android-verify**. Do not call `control-ui` or `control-cli`. A surface this stack cannot drive is a risk in Appendix C, and its live block still names how each lane proves it (repo tests, the real CLI, a real HTTP call).
 
 ````markdown
 # <Program> plan
@@ -36,7 +36,7 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 - [ ] Read these from trunk at program start. Re-read them at every tick.
   - [ ] `git show origin/main:skills/stuc-mode/playbooks/<execution playbook>.md`
   - [ ] `git show origin/main:skills/swarm/SKILL.md`
-  - [ ] `git show origin/main:<control skill path>`
+  - [ ] `git show origin/main:skills/android-verify/SKILL.md`
   - [ ] `git show origin/main:skills/stuc-mode/playbooks/opening-a-pr.md`
   - [ ] `git show origin/main:skills/<each other leaf skill the program uses>`
 - [ ] Arm the 30-minute audit tick. In a local session, a real terminal `/loop`. In a cloud root, a cloud-sleeper wake chain. Never leave the cadence to memory.
@@ -56,7 +56,7 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 
 - [ ] Open the PR ready, never draft, with `gh pr create` and `draft: false`, or with Graphite `gt` for a stack.
 - [ ] Run the repo's lint and typecheck once before the PR-facing push. Push with hooks on.
-- [ ] Run `/deslop` before each commit and `/no-comments` before review.
+- [ ] Run `/unslop` before each commit and `/no-comments` before review.
 - [ ] Triage every Bugbot and security-reviewer comment per `../references/bugbot-triage.md`.
 - [ ] Rebase onto current trunk before babysit and again before the merge-ready report.
 
@@ -68,11 +68,11 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 
 ### Boot recipe, for every live lane
 
-Each live lane runs on a VM at the PR head. Android: **android-verify**. Other: `control-ui` or `control-cli` from `cursor-team-kit` if installed.
+Each live lane runs on a VM at the PR head. Drive with **android-verify**, then `docs/verify-<app>/` when it exists.
 
 - [ ] `git fetch origin <head-branch> && git checkout <head SHA>`.
 - [ ] <Start the backend and the surface. Wait for ready.>
-- [ ] <Deliver input only through the control skill's commands. Name the read-only diagnostics.>
+- [ ] <Deliver input only through **android-verify** (`android` CLI after Gradle assemble). Name the read-only diagnostics.>
 - [ ] Save every screenshot to `/tmp/swarm-<pr-id>/worker-<n>/<slug>.png` and return the paths with the report.
 
 ## <Task as a verb phrase> (<PR id>)
