@@ -24,8 +24,6 @@ android skills add --agent=codex --all
 
 chrisbanes HEAD clusters include `compose-state-and-effects`, `compose-performance`, `compose-component-design`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, `kotlin-control-flow`, `gradle-run`. This plugin's glue is `stuc-chrisbanes` (require install, fail closed, when). Leaf/cluster routing is the installed chrisbanes skill `using-chrisbanes-skills`. `/setup-stuc` fails closed if `compose-state-and-effects` or that installed router does not resolve.
 
-Unknown-path device exploration is `stuc-artemis` (Google ARTEMIS MCP, installed separately, fail closed for that step). Do not copy https://github.com/google/artemis into git. Device proof stays `android-verify`. `/setup-stuc` doctors Artemis as optional. Missing MCP does not make the stack not ready.
-
-Entry: `/stuc-mode` (or the `stuc-mode` skill). Verification of Android UI: `android-verify`. Setup/doctor: `setup-stuc`. Exploration: `stuc-artemis`.
+Entry: `/stuc-mode` (or the `stuc-mode` skill). Verification of Android UI: `android-verify`. Setup/doctor: `setup-stuc`.
 
 The human is the git author. Never add `Co-authored-by`. (P27) Rebase only with explicit permission. (P26)

@@ -4,7 +4,7 @@ Android/Kotlin agent skill stack: sticky `/stuc-mode`, named principles, playboo
 
 ## Install
 
-Public repo: [edivad1999/stuc-stack](https://github.com/edivad1999/stuc-stack). This tree does **not** vendor chrisbanes/skills, android/skills, the android-cli skill, or [google/artemis](https://github.com/google/artemis). Install the required upstreams **first**, then this plugin, then `/setup-stuc`. Artemis MCP is optional.
+Public repo: [edivad1999/stuc-stack](https://github.com/edivad1999/stuc-stack). This tree does **not** vendor chrisbanes/skills, android/skills, or the android-cli skill. Install the required upstreams **first**, then this plugin, then `/setup-stuc`.
 
 Manifests in this repo: Cursor (`.cursor-plugin/`), Claude Code (`.claude-plugin/`), Codex (`.codex-plugin/`). No other agent manifests ship here.
 
@@ -35,18 +35,6 @@ Codex extras:
 codex plugin marketplace add chrisbanes/skills --ref main
 codex plugin add chrisbanes-skills@chrisbanes-skills
 ```
-
-### Optional. Artemis explorer (not this git tree)
-
-Unknown-path device exploration uses **stuc-artemis** and a separately installed [ARTEMIS](https://github.com/google/artemis) MCP server. Not required for `/setup-stuc` to call the stack ready.
-
-```
-git clone https://github.com/google/artemis.git
-cd artemis
-uv run artemis mcp --install cursor
-```
-
-All IDEs: `uv run artemis mcp --install all`. Device proof stays `/android-verify`.
 
 ### Cursor
 
@@ -114,17 +102,17 @@ codex plugin add stuc-stack@stuc-stack
 /setup-stuc
 ```
 
-It writes the model rule, **doctors** upstreams (Artemis MCP is optional), and **associates** `docs/verify-*` skills (`stuc-stack: true` only) with this harness via a thin delegate. Doctoring the binary is not a device proof.
+It writes the model rule, **doctors** upstreams, and **associates** `docs/verify-*` skills (`stuc-stack: true` only) with this harness via a thin delegate. Doctoring the binary is not a device proof.
 
 ## Credit
 
-Tailored from the [pstack](https://github.com/cursor/plugins/tree/main/pstack) engineering stack (MIT, Lauren Tan). Copyright retained in `LICENSE`. Version here is `0.2.0`, synced to the pstack `0.15.2` engineering machine. It does not impersonate that version number.
+Tailored from the [pstack](https://github.com/cursor/plugins/tree/main/pstack) engineering stack (MIT, Lauren Tan). Copyright retained in `LICENSE`. Version here is `0.2.1`, synced to the pstack `0.15.2` engineering machine. It does not impersonate that version number.
 
 Project-local verification skill + feature-map **shape** follows [poteto/verification-skill-example](https://github.com/poteto/verification-skill-example) (fictional Atlas map). In this plugin that shape is Android: Gradle assemble, the `android` CLI, **android-verify**, no Node `check.sh`. Canonical files live in `docs/verify-<app>/`; Cursor/Claude/Codex only get a thin delegate. Sample: `skills/create-verification-skill/references/verify-notes-example/`.
 
 ## Use
 
-`/stuc-mode` for non-trivial work. Compose/Kotlin design goes through `stuc-chrisbanes`, then the installed chrisbanes router `using-chrisbanes-skills`, then **cluster names**. Google workflows route to android/skills **leaf names**. Unknown-path device exploration is `/stuc-artemis` (ARTEMIS MCP, installed separately). Device proof is `/android-verify` (Gradle assemble, then the `android` binary). Gradle execution uses the installed chrisbanes `gradle-run` skill, not a copy in this plugin.
+`/stuc-mode` for non-trivial work. Compose/Kotlin design goes through `stuc-chrisbanes`, then the installed chrisbanes router `using-chrisbanes-skills`, then **cluster names**. Google workflows route to android/skills **leaf names**. Device proof is `/android-verify` (Gradle assemble, then the `android` binary). Gradle execution uses the installed chrisbanes `gradle-run` skill, not a copy in this plugin.
 
 Opinionated overlays come from the author’s Android/Kotlin work, restated without a particular product’s module graph. Follow the repo in front of you.
 
@@ -137,17 +125,17 @@ Catalog, roles, and generic engineering behavior match pstack. Examples and Andr
 - **Android/Kotlin surface.** Playbooks drive live proof with `android-verify` + the official `android-cli` skill. Gradle still builds; `android run` only deploys prebuilt APKs. This stack does not call `cursor-team-kit` (`control-ui`, `control-cli`, `/deslop`).
 - **Same generic engineering machine, Android examples.** `how`, `why`, `unslop`, `architect`, `tdd`, `arena`, `eval`, playbooks, `create-verification-skill` / `maintain-verification-skill` keep pstack structure, triggers, and rules. TypeScript / Linear / `retry.ts` illustrations are Gradle / Compose / `android` CLI / Jira-or-GitHub. `architect` still runs on function-boundary crossing (arena, `not implemented` bodies, design-it-twice). Copy-the-last-screen / smallest-diff may skip with `architect skipped: …` — a thin exception, not a rewrite of architect.
 - **TypeScript pack dropped.** There is no `typescript-best-practices/`. Kotlin type/API discipline is `kotlin-best-practices` plus chrisbanes Kotlin clusters by **name**.
-- **Android glue (this plugin only).** `android-verify` (Drive loop), `kotlin-best-practices` (replacement for typescript-best-practices), `stuc-chrisbanes` (not named `using-chrisbanes-skills`), `using-android-skills`, `stuc-artemis` (ARTEMIS MCP glue, not a vendor of google/artemis). Project-local `verify-<app>` skills are generated into `docs/verify-<app>/` in the consuming repo (skill + feature map); harnesses get thin delegates. `gradle-run` and `kotlin-control-flow` are **not** shipped here; they are chrisbanes skills on HEAD.
-- **Upstreams referenced, not vendored.** `stuc-chrisbanes` (install / fail closed / when) plus the installed chrisbanes router `using-chrisbanes-skills`, and `using-android-skills`, route to current **names** and fail closed. `stuc-artemis` does the same for ARTEMIS MCP. Manifest `skills:` / `agents:` paths stay inside this directory. Official `android-cli` is named, never pasted.
+- **Android glue (this plugin only).** `android-verify` (Drive loop), `kotlin-best-practices` (replacement for typescript-best-practices), `stuc-chrisbanes` (not named `using-chrisbanes-skills`), `using-android-skills`. Project-local `verify-<app>` skills are generated into `docs/verify-<app>/` in the consuming repo (skill + feature map); harnesses get thin delegates. `gradle-run` and `kotlin-control-flow` are **not** shipped here; they are chrisbanes skills on HEAD.
+- **Upstreams referenced, not vendored.** `stuc-chrisbanes` (install / fail closed / when) plus the installed chrisbanes router `using-chrisbanes-skills`, and `using-android-skills`, route to current **names** and fail closed. Manifest `skills:` / `agents:` paths stay inside this directory. Official `android-cli` is named, never pasted.
 - **Verification contract.** Do not claim device/screenshot coverage that was not run. Name Gradle tasks, `android` commands, and devices. One device serial per run (`principle-separate-before-serializing-shared-state`).
 - **Multi-agent packaging.** pstack ships Cursor (`.cursor-plugin/`) only. This directory also has `.claude-plugin/` (with `dependencies`) and `.codex-plugin/` pointing at the same `skills/` tree.
 
 ### Minor
 
 - **Renames.** `poteto-mode` → `stuc-mode`; `setup-pstack` → `setup-stuc` (writes `~/.cursor/rules/stuc-stack-models.mdc`); `poteto-agent` → `stuc-agent`.
-- **Catalog vs pstack (names/purposes).** Kept: `how` (no critic panel), `why`, `unslop`, `architect`, `arena`, `eval`, `tdd`, `swarm`, `interrogate`, `create-verification-skill`, `maintain-verification-skill`, the 23 `principle-*` leaves including `principle-attack-the-premise` and `principle-test-behavior-not-implementation`, playbooks including babysit. Renamed: `poteto-mode` → `stuc-mode`, `setup-pstack` → `setup-stuc`, `typescript-best-practices` → `kotlin-best-practices`. Dropped: Benny automations, `make-bot-ui` (Cursor Grok Bot webhook pages, not Android). Added (Android glue only): `android-verify`, `stuc-chrisbanes`, `using-android-skills`, `stuc-artemis`. `/setup-stuc` asks for a reasoning budget (`unlimited` / `large` / `medium` / `small`) the way current setup does. Judgment defaults are `claude-fable-5-1-thinking-max`. Bug-fix, perf, and hillclimb defaults are `grok-4.6-fast-xhigh`.
+- **Catalog vs pstack (names/purposes).** Kept: `how` (no critic panel), `why`, `unslop`, `architect`, `arena`, `eval`, `tdd`, `swarm`, `interrogate`, `create-verification-skill`, `maintain-verification-skill`, the 23 `principle-*` leaves including `principle-attack-the-premise` and `principle-test-behavior-not-implementation`, playbooks including babysit. Renamed: `poteto-mode` → `stuc-mode`, `setup-pstack` → `setup-stuc`, `typescript-best-practices` → `kotlin-best-practices`. Dropped: Benny automations, `make-bot-ui` (Cursor Grok Bot webhook pages, not Android). Added (Android glue only): `android-verify`, `stuc-chrisbanes`, `using-android-skills`. `/setup-stuc` asks for a reasoning budget (`unlimited` / `large` / `medium` / `small`) the way current setup does. Judgment defaults are `claude-fable-5-1-thinking-max`. Bug-fix, perf, and hillclimb defaults are `grok-4.6-fast-xhigh`.
 - **No Benny.** `automations/benny/` is not in this tree.
-- **Glue skill names.** `stuc-chrisbanes`, `using-android-skills`, `android-verify`, `kotlin-best-practices`, `stuc-artemis`. Cluster routing is the installed chrisbanes skill `using-chrisbanes-skills`. Chrisbanes owns `gradle-run` / `kotlin-control-flow` / Compose and Kotlin clusters.
+- **Glue skill names.** `stuc-chrisbanes`, `using-android-skills`, `android-verify`, `kotlin-best-practices`. Cluster routing is the installed chrisbanes skill `using-chrisbanes-skills`. Chrisbanes owns `gradle-run` / `kotlin-control-flow` / Compose and Kotlin clusters.
 - **Cursor vs Claude deps.** Cursor cannot declare plugin dependencies and this plugin is not on the Cursor Marketplace. Enablement is Customize / `.cursor/settings.json` plus skill-name fail-closed. Load with `/add-plugin https://github.com/edivad1999/stuc-stack` or `~/.cursor/plugins/local`. Claude Code depends on `chrisbanes-skills@chrisbanes-skills` and `android-skills@android-skills` (upstream marketplaces, not this one). Codex has no plugin deps; add `edivad1999/stuc-stack` then `codex plugin add stuc-stack@stuc-stack`.
 - **Guide filename.** `docs/guide/02-stuc-mode.md` (not `02-poteto-mode.md`).
 - **No pstack guide art.** Copied `docs/guide/images/*.jpg` were deleted; markdown image embeds were removed.

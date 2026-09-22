@@ -1,6 +1,6 @@
 # Set up stuc-stack
 
-Install upstreams first, then this plugin, pick models, then run a first task. `/setup-stuc` refuses to call the stack ready if chrisbanes, android/skills, or `android` is missing. Missing Artemis MCP does not fail that check.
+Install upstreams first, then this plugin, pick models, then run a first task. `/setup-stuc` refuses to call the stack ready if chrisbanes, android/skills, or `android` is missing.
 
 ## Install upstreams (not this git tree)
 
@@ -13,8 +13,6 @@ android skills add --all
 Codex extras: `codex plugin marketplace add chrisbanes/skills --ref main` then `codex plugin add chrisbanes-skills@chrisbanes-skills`; `android skills add --agent=codex --all`.
 
 Binary: https://developer.android.com/tools/agents/android-cli/download
-
-Optional explorer (not required for stack-ready). Clone [google/artemis](https://github.com/google/artemis) **outside this plugin**, then `uv run artemis mcp --install cursor`. `/setup-stuc` doctors **stuc-artemis** as optional. Device proof stays **android-verify**.
 
 Claude Code `dependencies` are `chrisbanes-skills@chrisbanes-skills` and `android-skills@android-skills`. Install those two plugins **before** stuc-stack. `/setup-stuc` fails closed if they are missing.
 
@@ -57,13 +55,13 @@ Cursor has no `dependencies` field in `plugin.json`.
 /setup-stuc
 ```
 
-[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc`, associates `docs/verify-*` (`stuc-stack: true` only) with this harness, and checks that the installed chrisbanes router `using-chrisbanes-skills` (not this plugin's `stuc-chrisbanes` glue), `compose-state-and-effects`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve (`which android` / `android -V`). That doctor is not a device proof. It also probes Artemis MCP (`mobile_run_task`). Missing MCP means exploration is unavailable, not that the stack is not ready.
+[`/setup-stuc`](../../skills/setup-stuc/SKILL.md) writes `~/.cursor/rules/stuc-stack-models.mdc`, associates `docs/verify-*` (`stuc-stack: true` only) with this harness, and checks that the installed chrisbanes router `using-chrisbanes-skills` (not this plugin's `stuc-chrisbanes` glue), `compose-state-and-effects`, `edge-to-edge`, the official `android-cli` skill, and the `android` binary resolve (`which android` / `android -V`). That doctor is not a device proof.
 
 You only override what you care about. `inherit-parent` or `auto` means the subagent inherits the parent chat model.
 
 ## Accept the verification offer, or don't
 
-If the project has no `docs/verify-*` skill, setup offers [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) once. For Android apps, generated Drive calls **android-verify** (Gradle assemble, then the `android` CLI). It does not copy the android-cli skill into the repo. If screens are unknown, generation may walk them with **stuc-artemis**, then still write Drive as `android` commands. `/setup-stuc` also wires harness delegates for existing `stuc-stack: true` skills under `docs/` so Claude Code or Codex can `/verify-<app>` without copying chrisbanes into the project.
+If the project has no `docs/verify-*` skill, setup offers [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md) once. For Android apps, generated Drive calls **android-verify** (Gradle assemble, then the `android` CLI). It does not copy the android-cli skill into the repo. `/setup-stuc` also wires harness delegates for existing `stuc-stack: true` skills under `docs/` so Claude Code or Codex can `/verify-<app>` without copying chrisbanes into the project.
 
 After setup, start a new chat. The model rule applies to new sessions.
 

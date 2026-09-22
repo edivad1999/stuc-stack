@@ -76,14 +76,6 @@ You rarely need more words. You need the right name, and [the principles page](.
 
 That's the whole prompt. [`/bro`](../../skills/bro/SKILL.md) restates the last message like one human talking to another, no jargon, shorter. Use it when a reply is technically thorough and you still don't know what it said.
 
-## Walk an unknown Android path, then prove it
-
-```text
-/stuc-mode the share sheet crashes after login. I don't know the taps. explore on the device, then prove with layout or a screen capture.
-```
-
-That loads **stuc-artemis** for the hunt and **android-verify** for Done. Skip this if `docs/verify-<app>/` already names the path.
-
 ## The pitfalls
 
 - **Enumerating skills in the prompt.** "use /how then /architect then /arena" reorders steps the playbook already sequences. State the goal and constraints. Name a skill only to override a default.
@@ -93,7 +85,6 @@ That loads **stuc-artemis** for the hunt and **android-verify** for Done. Skip t
 - **Accepting every review comment.** Bots and humans both file real catches and noise in one list. `/interrogate` sorts findings into act-on and dismissed buckets with reasons, and you can override either way.
 - **Treating `auto` as a model slug.** `auto` and `inherit-parent` mean "omit the model field so the subagent inherits the parent chat model." [Setup](./01-setup.md) covers the roles.
 - **Reporting success off a green build.** A build proves it compiles. Ask for the real command, flow, stored value, or profile, and expect the evidence in the reply.
-- **Treating an Artemis trace as device proof.** **stuc-artemis** finds unknown taps. **android-verify** still owns layout JSON, screen PNG, or journey JSON. (P18)
 - **Writing a `SKILL.md` freehand.** Route it through the [Authoring or modifying a skill playbook](../../skills/stuc-mode/playbooks/authoring-a-skill.md) so validation and review happen.
 
 That's the guide. If you skipped ahead, go back to [setup](./01-setup.md) and run one real task. The habits stick from use, not from reading.

@@ -19,7 +19,7 @@ Load this glue, then the installed chrisbanes router, when the task is:
 - Kotlin Flow, coroutines, control flow, API/types, or KMP expect/actual
 - Agent-initiated Gradle assemble or check (`gradle-run`)
 
-Google product workflows stay `using-android-skills`. Device proof stays `android-verify`. Unknown-path exploration is `stuc-artemis`.
+Google product workflows stay `using-android-skills`. Device proof stays `android-verify`.
 
 HEAD cluster names (installed, not vendored): `compose-state-and-effects`, `compose-performance`, `compose-component-design`, `compose-animations`, `compose-focus-navigation`, `compose-ui-testing-patterns`, `kotlin-concurrency-and-flow`, `kotlin-api-design`, `kotlin-control-flow`, `gradle-run`.
 

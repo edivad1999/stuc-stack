@@ -59,18 +59,6 @@ Do not instruct `plugins.chrisbanes-skills.enabled` until chrisbanes ships `.cur
 
 If any required row fails, say the stack is **not ready**. Continue with model setup if the user wants it anyway.
 
-### 0b. Doctor Artemis (optional explorer)
-
-Not required for stack-ready. Required before any playbook step that loads **stuc-artemis**.
-
-Check, do not vendor:
-
-| Need | How to check | If missing, print |
-|---|---|---|
-| Artemis MCP | This session exposes `mobile_run_task`, or `uv run artemis --help` exits 0 | Clone https://github.com/google/artemis **outside this plugin**, then `uv run artemis mcp --install cursor` (or `--install all`). Do not copy that tree into git. |
-
-If missing, say exploration is unavailable. Do not claim the stack is not ready for that reason alone.
-
 ### 1. Detect available models
 
 Enumerate the model slugs you can pass to a `Task` subagent in this session. If you cannot detect any, ask the user to paste the slugs they have access to. Never write a real slug you have not confirmed is available. The aliases `inherit-parent` and `auto` are always valid.
@@ -142,7 +130,7 @@ Project-local stuc-stack skills live in `docs/` (canonical) plus a thin harness 
 
 ### 7. Confirm
 
-Tell the user the rule was written, whether required upstreams are ready, whether Artemis MCP is available for **stuc-artemis**, which stuc-stack project skills were associated with this harness, and that the model rule applies to new sessions.
+Tell the user the rule was written, whether required upstreams are ready, which stuc-stack project skills were associated with this harness, and that the model rule applies to new sessions.
 
 ### 8. Offer a verification skill (optional)
 
