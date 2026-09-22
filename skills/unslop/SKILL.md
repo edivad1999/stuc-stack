@@ -1,6 +1,7 @@
 ---
 name: unslop
 description: Cut AI tells from prose and code slop from diffs. Must always apply.
+disable-model-invocation: true
 ---
 
 # Unslop

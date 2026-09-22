@@ -5,7 +5,8 @@ description: >-
   (describe, run, layout, screen, journeys, Studio preview). Use when shipping
   UI, fixing runtime defects, launching on a device/emulator, or claiming visual
   coverage. Does not compile via android-cli. Stops if the android binary or
-  official android-cli skill is missing.
+  official android-cli skill is missing. Unknown-path exploration is
+  **stuc-artemis**; this skill remains the proof contract.
 ---
 
 # Android verify
@@ -32,7 +33,9 @@ Do not claim screenshot, device, or visual coverage you did not run. Name the co
 
 ## When to use
 
-Must use for user-visible Android UI, runtime-only bugs, “launch the app”, visual parity, or playbook “matching surface” on an Android repo.
+Must use for user-visible Android UI, runtime-only bugs, "launch the app", visual parity, or playbook "matching surface" on an Android repo.
+
+Unknown tap paths, cross-app flows, soak, and logcat hunts load **stuc-artemis** first. Come back here for Done. An Artemis trace is not this Drive.
 
 If the consuming repo has `docs/verify-<app>/SKILL.md`, **follow that skill** after this one: its feature map is the coverage set. Harness delegates (`.cursor/skills/verify-*`, `.claude/skills`, `.codex/skills`) only point here; do not treat a delegate as the map. Sample shape: `create-verification-skill/references/verify-notes-example/`.
 
@@ -41,6 +44,8 @@ Host unit tests stay Gradle. Assemble alone is not done when UI changed. There i
 ## Device lock
 
 One serial per run. Refuse to double-drive a shared emulator without a lock. android-cli has `--device` and no lease. See **principle-separate-before-serializing-shared-state**.
+
+If **stuc-artemis** holds this serial (`mobile_manage_task` status, or `mobile_diagnose` `tasks.active`), wait or `stop` that task. Do not `android layout`, `android screen`, or journeys on a busy serial.
 
 ## Launch
 
@@ -77,6 +82,8 @@ Keep artifacts. Cleanup must not delete them.
 - journey result JSON
 - Gradle test reports for host tests
 - logcat via adb on crash (outside android-cli)
+
+Artemis traces, keyframes, and reports from **stuc-artemis** are exploration receipts. They do not satisfy Done.
 
 **Done (UI/device):** named Gradle assemble or the asked screenshot/preview task was run and its exit recorded; if device proof was in scope, `android run` with APKs from `describe` plus at least one layout JSON, screen PNG, preview PNG, or journey JSON on disk; the reply lists commands actually executed; missing checks are listed as not run. (P18)
 

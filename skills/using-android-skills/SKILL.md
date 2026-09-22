@@ -61,6 +61,7 @@ If a HEAD name is missing and only a local alias exists, use the alias and say s
 - Insets and gestures follow official specs. Load `edge-to-edge` for inset work. Do not invent custom physics when docs exist. (P13)
 - View→Compose: load `migrate-xml-views-to-jetpack-compose` for the Google workflow, **and** follow the repo’s written plan plus how the last similar screen was done. Do not invent a new Compose architecture per screen. (P8)
 - Compose test **shape** is chrisbanes `compose-ui-testing-patterns`. Project test **setup** is `testing-setup`. Use the repo’s established screenshot/UI test path; do not add a second stack. (P15)
+- Unknown-path device exploration is this plugin's `stuc-artemis`, not an android/skills leaf. Proof stays `android-verify`.
 - Existing screenshot/preview Gradle tasks are blocking when present. Run the named task. (P16)
 - When the user asks for official docs or exhaustive upstream research, fetch; do not summarize from memory. (P31)
 
