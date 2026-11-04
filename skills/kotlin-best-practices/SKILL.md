@@ -49,3 +49,13 @@ Compose UI state/effects/slots/perf: `stuc-chrisbanes` then the installed chrisb
 **Generated sources** (i18n/keys/copies): accept conflict, regen via Gradle, then the project’s format/lint. Do not hand-merge generated files. (P23)
 
 **Environment flags are product boundaries.** Do not apply a change across environments the project treats as separate. (P32)
+
+**Minimal public surface.** Declarations only the module uses are `internal`. (P34)
+
+**Reuse before wrapping.** Prefer existing stdlib, platform, or design-system types over a new wrapper model. (P36)
+
+**Variants are one sealed hierarchy** declared in one file with nested implementations, not parallel draft models. Load `kotlin-api-design`.
+
+**Per-ViewModel effects.** Each ViewModel owns a nested sealed `Effect` type with only the effects it emits. (P40)
+
+**R8-safe code over keep rules** when the library supports R8. No name-based class or resource lookups. (P45)
