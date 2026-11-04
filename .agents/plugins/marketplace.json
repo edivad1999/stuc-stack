@@ -4,8 +4,9 @@
     {
       "name": "stuc-stack",
       "source": {
-        "source": "local",
-        "path": "./"
+        "source": "url",
+        "url": "https://github.com/edivad1999/stuc-stack",
+        "ref": "main"
       },
       "policy": {
         "installation": "INSTALLED_BY_DEFAULT",
